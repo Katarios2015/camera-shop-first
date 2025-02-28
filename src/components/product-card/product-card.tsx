@@ -1,47 +1,70 @@
 import { Link } from 'react-router-dom';
+import { GoodType } from '../../types/good-type';
+import { createStars } from './common';
 
-function ProductCard():JSX.Element{
+import { useAppDispatch} from '../hooks/index-hook';
+import { openModalCall } from '../../store/modal-call/modal-call';
+
+type ProductCardPropsType={
+  good:GoodType;
+}
+
+const STARS_COUNT = 5;
+const enum StarIconUrl {
+  IconStar = '#icon-star',
+  IconFullStar = '#icon-full-star'
+}
+
+function ProductCard(props: ProductCardPropsType):JSX.Element{
+  const {good} = props;
   const isInCart = false;
+  const stars = createStars(STARS_COUNT, StarIconUrl.IconStar);
+  const ratingStars = createStars(good.rating, StarIconUrl.IconFullStar);
+  if(ratingStars){
+    stars.splice(0,good.rating,...ratingStars);
+  }
+  const dispatch = useAppDispatch();
+
+  const handleProductCardButtonClick = ()=> {
+    document.body.style.overflow = 'hidden';
+    dispatch(openModalCall(good));
+  };
+
   return(
     <div className="product-card">
       <div className="product-card__img">
         <picture>
-          <source type="image/webp" srcSet="img/content/das-auge.webp, img/content/das-auge@2x.webp 2x" /><img src="img/content/das-auge.jpg" srcSet="img/content/das-auge@2x.jpg 2x" width={280} height={240} alt="Ретрокамера «Das Auge IV»" />
+          <source type="image/webp" srcSet={`${good.previewImgWebp} , ${good.previewImgWebp2x} 2x`} />
+          <img src={good.previewImg} srcSet={`${good.previewImg2x} 2x`} width={280} height={240} alt={good.name} />
         </picture>
       </div>
       <div className="product-card__info">
         <div className="rate product-card__rate">
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-star" />
-          </svg>
-          <p className="visually-hidden">Рейтинг: 3</p>
-          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>23</p>
+          {stars.map((item)=>(
+            <svg key={item.id} width={17} height={16} aria-hidden="true">
+              <use xlinkHref={item.url} />
+            </svg>
+          ))}
+          <p className="visually-hidden">Рейтинг: {good.rating}</p>
+          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{good.reviewCount}</p>
         </div>
-        <p className="product-card__title">Ретрокамера «Das Auge IV»</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>73 450 ₽
+        <p className="product-card__title">{good.name}</p>
+        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{good.price} ₽
         </p>
       </div>
       <div className="product-card__buttons">
         {isInCart ?
-          <button className="btn btn--purple product-card__btn" type="button">Купить
-          </button> :
           <Link className="btn btn--purple-border product-card__btn product-card__btn--in-cart" to="#">
             <svg width={16} height={16} aria-hidden="true">
               <use xlinkHref="#icon-basket" />
             </svg>В корзине
-          </Link>}
+          </Link>
+          :
+          <button
+            onClick={handleProductCardButtonClick}
+            className="btn btn--purple product-card__btn" type="button"
+          >Купить
+          </button>}
         <Link className="btn btn--transparent" to="#">Подробнее
         </Link>
       </div>

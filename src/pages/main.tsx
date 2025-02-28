@@ -1,5 +1,6 @@
 import BreadCrumbs from '../components/breadcrumbs/breadcrumbs';
 import CatalogList from '../components/catalog-list/catalog-list';
+import PopupCall from '../components/popup-call/popup-call';
 
 function Main():JSX.Element{
   return(
@@ -27,6 +28,7 @@ function Main():JSX.Element{
             </div>
           </section>
         </div>
+        <PopupCall/>
       </main>
     </div>
   );
