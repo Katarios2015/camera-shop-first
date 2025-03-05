@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import { GoodType } from '../../types/good-type';
 import { createStars } from './common';
 
-import { useAppDispatch} from '../hooks/index-hook';
+import {useAppDispatch} from '../hooks/index-hook';
 import { openModalCall } from '../../store/modal-call/modal-call';
+
 
 type ProductCardPropsType={
   good:GoodType;
@@ -18,6 +19,7 @@ const enum StarIconUrl {
 function ProductCard(props: ProductCardPropsType):JSX.Element{
   const {good} = props;
   const isInCart = false;
+
   const stars = createStars(STARS_COUNT, StarIconUrl.IconStar);
   const ratingStars = createStars(good.rating, StarIconUrl.IconFullStar);
   if(ratingStars){
@@ -26,9 +28,10 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
   const dispatch = useAppDispatch();
 
   const handleProductCardButtonClick = ()=> {
-    document.body.style.overflow = 'hidden';
     dispatch(openModalCall(good));
+    document.body.style.overflow = 'hidden';
   };
+
 
   return(
     <div className="product-card">
