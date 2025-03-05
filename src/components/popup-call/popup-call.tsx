@@ -1,30 +1,31 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef} from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/index-hook';
+import useFocus from '../hooks/use-focus';
 import { getIsModalCallActive, getActiveGood } from '../../store/modal-call/selectors';
 import { closeModalCall } from '../../store/modal-call/modal-call';
+import useTrapFocus from '../hooks/use-trap-focus';
 
 function PopupCall():JSX.Element {
   const isModalCallActive = useAppSelector(getIsModalCallActive);
   const activeGood = useAppSelector(getActiveGood);
   const dispatch = useAppDispatch();
 
+  const firstFocusElementRef = useFocus<HTMLInputElement>(isModalCallActive);
+  const lastFocusElementRef = useRef<HTMLButtonElement>(null);
+
   const handleCloseButtonOrOverLayClick = ()=>{
+    document.body.style.overflow = 'visible';
     dispatch(closeModalCall());
   };
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    if(inputRef.current){
-      inputRef.current.focus();
-    }
-  }, []);
-
+  useTrapFocus(firstFocusElementRef, lastFocusElementRef, isModalCallActive);
 
   useEffect(()=>{
     if(isModalCallActive){
       const onEscKeyDown = (event:KeyboardEvent) => {
-        event.preventDefault();
         if(event.key === 'Escape') {
+          event.preventDefault();
+          document.body.style.overflow = 'visible';
           dispatch(closeModalCall());
         }
       };
@@ -35,13 +36,11 @@ function PopupCall():JSX.Element {
     }
   },[isModalCallActive, dispatch]);
 
+
   return(
     <div className={isModalCallActive ? 'modal is-active' : 'modal'}>
       <div className="modal__wrapper">
-        <div
-          onClick={handleCloseButtonOrOverLayClick}
-          className="modal__overlay"
-        />
+        <div onClick={handleCloseButtonOrOverLayClick} className="modal__overlay"></div>
         <div className="modal__content">
           <p className="title title--h4">Свяжитесь со мной</p>
           <div className="basket-item basket-item--short">
@@ -68,7 +67,10 @@ function PopupCall():JSX.Element {
                   <use xlinkHref="#icon-snowflake" />
                 </svg>
               </span>
-              <input tabIndex={0} ref={inputRef} type="tel" name="user-tel" placeholder="Введите ваш номер" required autoFocus={isModalCallActive}/>
+              <input ref={firstFocusElementRef} type="tel"
+                pattern="^(\+7|8)\({0,1}\d{3}\){0,1}\d{3}\-{0,1}\d{2}\-{0,1}\d{2}"
+                name="user-tel" placeholder="Введите ваш номер" required
+              />
             </label>
             <p className="custom-input__error">Нужно указать номер</p>
           </div>
@@ -79,7 +81,7 @@ function PopupCall():JSX.Element {
               </svg>Заказать
             </button>
           </div>
-          <button tabIndex={1} onClick={handleCloseButtonOrOverLayClick}
+          <button ref={lastFocusElementRef} onClick={handleCloseButtonOrOverLayClick}
             className="cross-btn" type="button" aria-label="Закрыть попап"
           >
             <svg width={10} height={10} aria-hidden="true">

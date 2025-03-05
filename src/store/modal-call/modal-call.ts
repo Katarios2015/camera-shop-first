@@ -8,7 +8,7 @@ const initialState: ModalCallType = {
 };
 
 export const modalCall = createSlice({
-  name: NameSpace.GoodsData,
+  name: NameSpace.ModalCall,
   initialState: initialState,
   reducers: {
     openModalCall:(state, action: PayloadAction<ModalCallType['activeGood']>) => {
