@@ -16,3 +16,15 @@ export const fetchDataGoods = createAsyncThunk<GoodType[], undefined,{
   },
 );
 
+
+export const fetchDataProductPage = createAsyncThunk<GoodType, number,{
+  dispatch:AppDispatch;
+  getState: State;
+  extra: AxiosInstance;
+}>(
+  'data/product',
+  async (id, {extra:api}) => {
+    const response = await api.get<GoodType>(`${ApiRoute.Cameras}/${id}`);
+    return response.data;
+  },
+);

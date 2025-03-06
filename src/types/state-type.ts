@@ -6,7 +6,8 @@ export type State = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export type GoodsDataType = {
-goods:GoodType[];
+  goods:GoodType[];
+  product: GoodType|null;
 }
 
 export type ModalCallType = {

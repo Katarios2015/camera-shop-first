@@ -1,18 +1,8 @@
 import BreadCrumbs from '../components/breadcrumbs/breadcrumbs';
 import CatalogList from '../components/catalog-list/catalog-list';
 import PopupCall from '../components/popup-call/popup-call';
-import { useAppSelector} from '../components/hooks/index-hook';
-import { getIsModalCallActive } from '../store/modal-call/selectors';
-import { useRef } from 'react';
 
 function Main():JSX.Element{
-
-  const isModalCallActive = useAppSelector(getIsModalCallActive);
-  const pageContentRef = useRef<HTMLDivElement|null>(null);
-
-  /*if(isModalCallActive && pageContentRef.current){
-    pageContentRef.current.inert = true;
-  }*/
 
   return(
     <div className="wrapper">
@@ -23,7 +13,7 @@ function Main():JSX.Element{
           </picture>
           <p className="banner__info"><span className="banner__message">Новинка!</span><span className="title title--h1">Cannonball&nbsp;Pro&nbsp;MX&nbsp;8i</span><span className="banner__text">Профессиональная камера от&nbsp;известного производителя</span><a className="btn" href="#">Подробнее</a></p>
         </div>
-        <div className="page-content" ref={pageContentRef}>
+        <div className="page-content">
           <BreadCrumbs/>
           <section className="catalog">
             <div className="container">

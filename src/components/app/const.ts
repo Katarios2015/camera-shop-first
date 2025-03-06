@@ -1,3 +1,5 @@
 export const enum AppRoute {
-Catalog='/'
+  Catalog ='/',
+  Product = 'camera',
+  NotFound = 'not-found'
 }
