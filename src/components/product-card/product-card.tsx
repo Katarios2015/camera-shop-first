@@ -1,30 +1,19 @@
 import { Link } from 'react-router-dom';
 import { GoodType } from '../../types/good-type';
-import { createStars } from './common';
-
 import {useAppDispatch} from '../hooks/index-hook';
 import { openModalCall } from '../../store/modal-call/modal-call';
-
+import { AppRoute } from '../app/const';
+import ProductRate from '../product-rate/product-rate';
 
 type ProductCardPropsType={
   good:GoodType;
-}
-
-const STARS_COUNT = 5;
-const enum StarIconUrl {
-  IconStar = '#icon-star',
-  IconFullStar = '#icon-full-star'
 }
 
 function ProductCard(props: ProductCardPropsType):JSX.Element{
   const {good} = props;
   const isInCart = false;
 
-  const stars = createStars(STARS_COUNT, StarIconUrl.IconStar);
-  const ratingStars = createStars(good.rating, StarIconUrl.IconFullStar);
-  if(ratingStars){
-    stars.splice(0,good.rating,...ratingStars);
-  }
+
   const dispatch = useAppDispatch();
 
   const handleProductCardButtonClick = ()=> {
@@ -42,15 +31,7 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
         </picture>
       </div>
       <div className="product-card__info">
-        <div className="rate product-card__rate">
-          {stars.map((item)=>(
-            <svg key={item.id} width={17} height={16} aria-hidden="true">
-              <use xlinkHref={item.url} />
-            </svg>
-          ))}
-          <p className="visually-hidden">Рейтинг: {good.rating}</p>
-          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{good.reviewCount}</p>
-        </div>
+        <ProductRate good={good}/>
         <p className="product-card__title">{good.name}</p>
         <p className="product-card__price"><span className="visually-hidden">Цена:</span>{good.price} ₽
         </p>
@@ -68,7 +49,7 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
             className="btn btn--purple product-card__btn" type="button"
           >Купить
           </button>}
-        <Link className="btn btn--transparent" to="#">Подробнее
+        <Link className="btn btn--transparent" to={`${AppRoute.Product}/${good.id}`}>Подробнее
         </Link>
       </div>
     </div>
