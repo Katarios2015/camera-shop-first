@@ -1,9 +1,8 @@
-import BreadCrumbs from '../components/breadcrumbs/breadcrumbs';
-import CatalogList from '../components/catalog-list/catalog-list';
-import PopupCall from '../components/popup-call/popup-call';
+import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
+import CatalogList from '../../components/catalog-list/catalog-list';
+import PopupCall from '../../components/popup-call/popup-call';
 
-function Main():JSX.Element{
-
+function MainCatalog():JSX.Element{
   return(
     <div className="wrapper">
       <main>
@@ -34,4 +33,4 @@ function Main():JSX.Element{
     </div>
   );
 }
-export default Main;
+export default MainCatalog;
