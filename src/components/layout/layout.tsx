@@ -4,13 +4,14 @@ import FooterList from '../footer-list/footer-list';
 import { NAVIGATE_ITEMS } from '../navigate-list/const';
 import {SOURCE_ITEMS, SUPPORT_ITEMS, SOCIAL_ITEMS} from './const';
 import SocialList from '../social-list/social-list';
+import { AppRoute } from '../app/const';
 
 function Layout():JSX.Element {
   return(
     <>
       <header className="header" id="header">
         <div className="container">
-          <Link className="header__logo" to={'/'} aria-label="Переход на главную">
+          <Link className="header__logo" to={AppRoute.Catalog} aria-label="Переход на главную">
             <svg width={100} height={36} aria-hidden="true">
               <use xlinkHref="#icon-logo" />
             </svg>
@@ -22,7 +23,7 @@ function Layout():JSX.Element {
       <footer className="footer">
         <div className="container">
           <div className="footer__info">
-            <Link className="footer__logo" to={'/'} aria-label="Переход на главную">
+            <Link className="footer__logo" to={AppRoute.Catalog} aria-label="Переход на главную">
               <svg width={100} height={36} aria-hidden="true">
                 <use xlinkHref="#icon-logo-mono" />
               </svg>

@@ -12,8 +12,6 @@ type ProductCardPropsType={
 function ProductCard(props: ProductCardPropsType):JSX.Element{
   const {good} = props;
   const isInCart = false;
-
-
   const dispatch = useAppDispatch();
 
   const handleProductCardButtonClick = ()=> {

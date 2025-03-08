@@ -1,7 +1,7 @@
 export const NAVIGATE_ITEMS = [
   {
     name:'Каталог',
-    url:'/catalog'
+    url:'/'
   },
   {
     name:'Гарантии',

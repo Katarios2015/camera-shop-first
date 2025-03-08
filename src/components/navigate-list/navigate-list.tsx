@@ -6,7 +6,7 @@ function NavigateList():JSX.Element{
       <ul className="main-nav__list">
         {NAVIGATE_ITEMS.map((item)=>(
           <li key={item.name} className="main-nav__item">
-            <NavLink className="main-nav__link" to={item.name}>{item.name}</NavLink>
+            <NavLink className="main-nav__link" to={item.url}>{item.name}</NavLink>
           </li>
         ))}
       </ul>
