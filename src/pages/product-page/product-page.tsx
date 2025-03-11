@@ -5,9 +5,10 @@ import { useAppDispatch, useAppSelector } from '../../components/hooks/index-hoo
 import { getProduct } from '../../store/goods-data/selectors';
 import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ReviewBlock from '../../components/review-block/review-block';
-import { fetchDataProductPage } from '../../store/api-actions';
-import { createStars, STARS_COUNT, StarIconUrl} from '../../components/product-rate/common';
-import ProductRate from '../../components/product-rate/product-rate';
+import { fetchDataProductPage, fetchDataReviews } from '../../store/api-actions';
+import { createStars, STARS_COUNT, StarIconUrl} from '../../components/rating-stars/common';
+import RatingStars from '../../components/rating-stars/rating-stars';
+import { getReviews } from '../../store/reviews-data/selectors';
 
 
 function ProductPage():JSX.Element|undefined{
@@ -15,6 +16,7 @@ function ProductPage():JSX.Element|undefined{
   const params = useParams();
   const activeProductId = Number(params.id);
   const product = useAppSelector(getProduct);
+  const reviews = useAppSelector(getReviews);
 
   const stars = createStars(STARS_COUNT, StarIconUrl.IconStar);
   const ratingStars = product ? createStars(product.rating, StarIconUrl.IconFullStar) : null;
@@ -38,6 +40,7 @@ function ProductPage():JSX.Element|undefined{
 
   useEffect(()=>{
     dispatch(fetchDataProductPage(activeProductId));
+    dispatch(fetchDataReviews(activeProductId));
   },[activeProductId, dispatch]);
 
   if(product){
@@ -56,7 +59,7 @@ function ProductPage():JSX.Element|undefined{
                   </div>
                   <div className="product__content">
                     <h1 className="title title--h3">{product.name}</h1>
-                    <ProductRate good={product}/>
+                    <RatingStars item={product} isReview={false}/>
                     <p className="product__price"><span className="visually-hidden">Цена:</span>{product.price} ₽</p>
                     <button className="btn btn--purple" type="button">
                       <svg width={24} height={16} aria-hidden="true">
@@ -108,7 +111,7 @@ function ProductPage():JSX.Element|undefined{
                 </div>
               </section>
             </div>
-            <ReviewBlock/>
+            <ReviewBlock reviews={reviews}/>
           </div>
         </main>
         <Link className="up-btn" to='#header'>

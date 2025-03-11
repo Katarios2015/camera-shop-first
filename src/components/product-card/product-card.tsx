@@ -3,7 +3,7 @@ import { GoodType } from '../../types/good-type';
 import {useAppDispatch} from '../hooks/index-hook';
 import { openModalCall } from '../../store/modal-call/modal-call';
 import { AppRoute } from '../app/const';
-import ProductRate from '../product-rate/product-rate';
+import ProductRate from '../rating-stars/rating-stars';
 
 type ProductCardPropsType={
   good:GoodType;
@@ -29,7 +29,7 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
         </picture>
       </div>
       <div className="product-card__info">
-        <ProductRate good={good}/>
+        <ProductRate item={good} isReview={false}/>
         <p className="product-card__title">{good.name}</p>
         <p className="product-card__price"><span className="visually-hidden">Цена:</span>{good.price} ₽
         </p>
