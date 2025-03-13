@@ -1,21 +1,49 @@
-import { useEffect, useRef} from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/index-hook';
 import useFocus from '../hooks/use-focus';
 import { getIsModalCallActive, getActiveGood } from '../../store/modal-call/selectors';
 import { closeModalCall } from '../../store/modal-call/modal-call';
 import useTrapFocus from '../hooks/use-trap-focus';
 
+import { postOrder } from '../../store/api-actions';
+import { getServerFomatPhone } from './common';
+import { getDisabledFlag } from '../../store/modal-call/selectors';
+
 function PopupCall():JSX.Element {
   const isModalCallActive = useAppSelector(getIsModalCallActive);
+  const isFormDisabled = useAppSelector(getDisabledFlag);
   const activeGood = useAppSelector(getActiveGood);
   const dispatch = useAppDispatch();
 
   const firstFocusElementRef = useFocus<HTMLInputElement>(isModalCallActive);
   const lastFocusElementRef = useRef<HTMLButtonElement>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  const [phone, setPhone] = useState('');
+
+  const handlePhoneInputChange = (event:ChangeEvent<HTMLInputElement>)=> {
+    setPhone(event.target.value);
+  };
 
   const handleCloseButtonOrOverLayClick = ()=>{
     document.body.style.overflow = 'visible';
     dispatch(closeModalCall());
+    formRef.current?.reset();
+    setPhone('');
+  };
+
+
+  const handleOrderButtonClick = (evt: FormEvent<HTMLFormElement>)=>{
+    evt.preventDefault();
+    if(activeGood){
+      dispatch(postOrder({
+        camerasIds: [activeGood.id],
+        coupon: null,
+        tel: getServerFomatPhone(phone)
+      })).unwrap().then(()=>{
+        handleCloseButtonOrOverLayClick();
+      });
+    }
   };
 
   useTrapFocus(firstFocusElementRef, lastFocusElementRef, isModalCallActive);
@@ -41,7 +69,7 @@ function PopupCall():JSX.Element {
     <div className={isModalCallActive ? 'modal is-active' : 'modal'}>
       <div className="modal__wrapper">
         <div onClick={handleCloseButtonOrOverLayClick} className="modal__overlay"></div>
-        <div className="modal__content">
+        <form ref={formRef} className="modal__content" action="#" method="post" onSubmit={handleOrderButtonClick}>
           <p className="title title--h4">Свяжитесь со мной</p>
           <div className="basket-item basket-item--short">
             <div className="basket-item__img">
@@ -67,15 +95,21 @@ function PopupCall():JSX.Element {
                   <use xlinkHref="#icon-snowflake" />
                 </svg>
               </span>
-              <input ref={firstFocusElementRef} type="tel"
-                pattern="^(\+7|8)\({0,1}\d{3}\){0,1}\d{3}\-{0,1}\d{2}\-{0,1}\d{2}"
+              <input ref={firstFocusElementRef}
+                onInput = {handlePhoneInputChange}
+                type="tel"
+                pattern="^(\+7|8)[\(]{0,1}\d{3}[\)]{0,1}\d{3}[\-]{0,1}\d{2}[\-]{0,1}\d{2}"
+                defaultValue={''}
                 name="user-tel" placeholder="Введите ваш номер" required
               />
             </label>
             <p className="custom-input__error">Нужно указать номер</p>
           </div>
           <div className="modal__buttons">
-            <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button">
+            <button
+              className="btn btn--purple modal__btn modal__btn--fit-width" type="submit"
+              disabled={isFormDisabled}
+            >
               <svg width={24} height={16} aria-hidden="true">
                 <use xlinkHref="#icon-add-basket" />
               </svg>Заказать
@@ -88,7 +122,7 @@ function PopupCall():JSX.Element {
               <use xlinkHref="#icon-close" />
             </svg>
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

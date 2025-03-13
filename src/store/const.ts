@@ -6,5 +6,6 @@ export const enum NameSpace {
 
 export const enum ApiRoute {
   Cameras = 'cameras',
-  Reviews ='reviews'
+  Reviews ='reviews',
+  Orders = 'orders'
 }

@@ -51,7 +51,8 @@ export const makeFakeStore = (initialState?: Partial<State>): State => ({
   },
   MODAL_CALL: {
     isModalCallActive: false,
-    activeGood: null
+    activeGood: null,
+    isFormDisabled: false
   },
   DATA_REVIEWS:{
     reviews:[]

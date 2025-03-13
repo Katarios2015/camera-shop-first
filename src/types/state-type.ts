@@ -14,6 +14,7 @@ export type GoodsDataType = {
 export type ModalCallType = {
   isModalCallActive: boolean;
   activeGood:GoodType|null;
+  isFormDisabled: boolean;
 }
 
 export type ReviewsDataType = {

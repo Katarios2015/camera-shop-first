@@ -8,13 +8,15 @@ const initialState:ReviewsDataType = {
 };
 
 export const reviewsData = createSlice({
-  name: NameSpace.GoodsData,
+  name: NameSpace.ReviewsData,
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchDataReviews.fulfilled, (state, action) => {
-        state.reviews = action.payload;
+        state.reviews =
+        action.payload.sort((a,b)=>new Date(b.createAt).getTime()
+        - new Date(a.createAt).getTime());
       });
   },
 });

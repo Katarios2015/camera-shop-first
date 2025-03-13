@@ -8,5 +8,4 @@ export const rootReducer = combineReducers({
   [NameSpace.GoodsData]:goodsData.reducer,
   [NameSpace.ModalCall]:modalCall.reducer,
   [NameSpace.ReviewsData]:reviewsData.reducer
-}
-);
+});
