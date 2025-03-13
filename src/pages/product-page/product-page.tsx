@@ -20,6 +20,7 @@ function ProductPage():JSX.Element|undefined{
 
   const stars = createStars(STARS_COUNT, StarIconUrl.IconStar);
   const ratingStars = product ? createStars(product.rating, StarIconUrl.IconFullStar) : null;
+
   if(ratingStars && product){
     stars.splice(0,product.rating,...ratingStars);
   }
@@ -27,6 +28,12 @@ function ProductPage():JSX.Element|undefined{
   const [isTabDescriptionActive,setTabDescriptionActive] = useState(true);
   const [isTabPropertyActive,setTabPropertyActive] = useState(false);
 
+  const handleAnchorLinkClick = ()=>{
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
   const handleTabControlButtonClick = ()=>{
     if(isTabDescriptionActive){
@@ -38,10 +45,14 @@ function ProductPage():JSX.Element|undefined{
     }
   };
 
-  useEffect(()=>{
-    dispatch(fetchDataProductPage(activeProductId));
-    dispatch(fetchDataReviews(activeProductId));
-  },[activeProductId, dispatch]);
+  useEffect(() => {
+
+    if (activeProductId) {
+      dispatch(fetchDataProductPage(activeProductId));
+      dispatch(fetchDataReviews(activeProductId));
+    }
+
+  }, [activeProductId, dispatch]);
 
   if(product){
     return(
@@ -114,7 +125,7 @@ function ProductPage():JSX.Element|undefined{
             <ReviewBlock reviews={reviews}/>
           </div>
         </main>
-        <Link className="up-btn" to='#header'>
+        <Link onClick={handleAnchorLinkClick} className="up-btn" to='#header'>
           <svg width={12} height={18} aria-hidden="true">
             <use xlinkHref="#icon-arrow2" />
           </svg>

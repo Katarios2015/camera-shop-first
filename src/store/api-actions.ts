@@ -4,6 +4,7 @@ import { ApiRoute } from './const';
 import { GoodType } from '../types/good-type';
 import { Review } from '../types/review-type';
 import {State, AppDispatch} from '../types/state-type';
+import { NewOrder } from '../types/order-type';
 
 export const fetchDataGoods = createAsyncThunk<GoodType[], undefined,{
   dispatch:AppDispatch;
@@ -34,9 +35,20 @@ export const fetchDataReviews = createAsyncThunk<Review[], number,{
   getState: State;
   extra: AxiosInstance;
 }>(
-  'data/goods',
+  'data/reviews',
   async (id, {extra:api}) => {
     const response = await api.get<Review[]>(`${ApiRoute.Cameras}/${id}/${ApiRoute.Reviews}`);
     return response.data;
+  },
+);
+
+export const postOrder = createAsyncThunk<void, NewOrder,{
+  dispatch:AppDispatch;
+  getState: State;
+  extra: AxiosInstance;
+}>(
+  'product/order',
+  async ({camerasIds, coupon, tel}, {extra:api}) => {
+    await api.post<NewOrder>(ApiRoute.Orders, {camerasIds, coupon,tel});
   },
 );

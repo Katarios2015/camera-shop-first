@@ -21,21 +21,15 @@ dayjs.updateLocale('ru', {
   ]
 });
 
-
 function ReviewBlock(props:ReviewsProps){
   const {reviews} = props;
-  let REVIEW_VISIBLE_COUNT = 3;
   const STEP = 3;
 
-  const sortedReviews = reviews.slice().sort((a:Review,b:Review)=>
-    dayjs(b.createAt).diff(dayjs(a.createAt)));
-  const slicedReviews = sortedReviews.slice(0,REVIEW_VISIBLE_COUNT);
-
-  //const [slicedReviews, setFiltredReviews] = useState(sortedReviews.slice(0,REVIEW_VISIBLE_COUNT));
+  const [reviewsVisibleCount, setReviewsVisibleCount] = useState(3);
+  const slicedReviews = reviews.slice(0,reviewsVisibleCount);
 
   const handleMoreButtonClick = ()=>{
-    REVIEW_VISIBLE_COUNT += STEP;
-    //setFiltredReviews(sortedReviews.slice(0,REVIEW_VISIBLE_COUNT));
+    setReviewsVisibleCount(reviewsVisibleCount + STEP);
   };
   return(
     <div className="page-content__section">
@@ -68,12 +62,13 @@ function ReviewBlock(props:ReviewsProps){
             ))}
           </ul>
           <div className="review-block__buttons">
-
-            <button
-              onClick={handleMoreButtonClick}
-              className="btn btn--purple" type="button"
-            >Показать больше отзывов
-            </button>
+            {slicedReviews.length === reviews.length ? ''
+              :
+              <button
+                onClick={handleMoreButtonClick}
+                className="btn btn--purple" type="button"
+              >Показать больше отзывов
+              </button>}
           </div>
         </div>
       </section>
