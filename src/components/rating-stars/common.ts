@@ -3,10 +3,10 @@ type ItemRatingType ={
   url:string;
 }
 export const getItemsWithRandomId = (items:ItemRatingType[]):ItemRatingType[]=>{
-
   const ItemsWthId = items.map((item)=>({...item, id:self.crypto.randomUUID()}));
   return ItemsWthId;
 };
+
 
 export const STARS_COUNT = 5;
 export const enum StarIconUrl {
@@ -14,9 +14,17 @@ export const enum StarIconUrl {
   IconFullStar = '#icon-full-star'
 }
 
-export const createStars = (starsCount:number, url:string):ItemRatingType[]=>{
-  const stars = new Array(starsCount).fill({ id: '',
-    url: url}) as [ItemRatingType];
+const getRatingStarItem = (url:string)=>({ id: '',
+  url: url});
+
+export const createStars = (rating:number):ItemRatingType[]=>{
+  const stars = [];
+  for(let i = 0; i < STARS_COUNT; i++){
+    stars.push(getRatingStarItem(StarIconUrl.IconStar));
+  }
+  stars.fill(getRatingStarItem(StarIconUrl.IconFullStar),0,rating);
+
   const starsWithId = getItemsWithRandomId(stars);
   return starsWithId;
+
 };

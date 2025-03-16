@@ -1,9 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/index-hook';
-import useFocus from '../hooks/use-focus';
+import { useAppDispatch, useAppSelector } from '../../hooks/index-hook';
+import useFocus from '../../hooks/use-focus';
 import { getIsModalCallActive, getActiveGood } from '../../store/modal-call/selectors';
 import { closeModalCall } from '../../store/modal-call/modal-call';
-import useTrapFocus from '../hooks/use-trap-focus';
+import useTrapFocus from '../../hooks/use-trap-focus';
 
 import { postOrder } from '../../store/api-actions';
 import { getServerFomatPhone } from './common';
@@ -66,7 +66,7 @@ function PopupCall():JSX.Element {
 
 
   return(
-    <div className={isModalCallActive ? 'modal is-active' : 'modal'}>
+    <div className={isModalCallActive ? 'modal is-active' : 'modal'} data-testid='popupCall'>
       <div className="modal__wrapper">
         <div onClick={handleCloseButtonOrOverLayClick} className="modal__overlay"></div>
         <form ref={formRef} className="modal__content" action="#" method="post" onSubmit={handleOrderButtonClick}>
@@ -74,18 +74,23 @@ function PopupCall():JSX.Element {
           <div className="basket-item basket-item--short">
             <div className="basket-item__img">
               <picture>
-                <source type="image/webp" srcSet={`${activeGood ? activeGood.previewImgWebp : ''} , ${activeGood ? activeGood.previewImgWebp2x : ''} 2x`} /><img src="img/content/orlenok.jpg" srcSet="img/content/orlenok@2x.jpg 2x" width={140} height={120} alt={activeGood?.name} />
+                <source type="image/webp" srcSet={`${activeGood ? activeGood.previewImgWebp : ''} , ${activeGood ? activeGood.previewImgWebp2x : ''} 2x`} /><img src="img/content/orlenok.jpg" srcSet="img/content/orlenok@2x.jpg 2x" width={140} height={120} alt={activeGood?.name} data-testid='image'/>
               </picture>
             </div>
             <div className="basket-item__description">
-              <p className="basket-item__title">{activeGood?.name}</p>
+              <p className="basket-item__title" data-testid='goodName'>{activeGood?.name}</p>
               <ul className="basket-item__list">
-                <li className="basket-item__list-item"><span className="basket-item__article">Артикул:</span> <span className="basket-item__number">{activeGood?.vendorCode}</span>
+                <li className="basket-item__list-item">
+                  <span className="basket-item__article">Артикул:</span>
+                  <span className="basket-item__number" data-testid='vendorCode'>{activeGood?.vendorCode}</span>
                 </li>
-                <li className="basket-item__list-item">{activeGood?.type}  {activeGood?.category}</li>
-                <li className="basket-item__list-item">{activeGood?.level} уровень</li>
+                <li className="basket-item__list-item" data-testid='typeCategory'>{activeGood?.type} {activeGood?.category}</li>
+                <li className="basket-item__list-item" data-testid='level'>{activeGood?.level} уровень</li>
               </ul>
-              <p className="basket-item__price"><span className="visually-hidden">Цена:</span>{activeGood?.price} ₽</p>
+              <p className="basket-item__price" data-testid='productCardPrice'>
+                <span className="visually-hidden">Цена:</span>
+                {activeGood?.price} ₽
+              </p>
             </div>
           </div>
           <div className="custom-input form-review__item">
@@ -101,6 +106,7 @@ function PopupCall():JSX.Element {
                 pattern="^(\+7|8)[\(]{0,1}\d{3}[\)]{0,1}\d{3}[\-]{0,1}\d{2}[\-]{0,1}\d{2}"
                 defaultValue={''}
                 name="user-tel" placeholder="Введите ваш номер" required
+                data-testid='phoneInput'
               />
             </label>
             <p className="custom-input__error">Нужно указать номер</p>
@@ -109,6 +115,7 @@ function PopupCall():JSX.Element {
             <button
               className="btn btn--purple modal__btn modal__btn--fit-width" type="submit"
               disabled={isFormDisabled}
+              data-testid='submitButton'
             >
               <svg width={24} height={16} aria-hidden="true">
                 <use xlinkHref="#icon-add-basket" />
@@ -116,7 +123,7 @@ function PopupCall():JSX.Element {
             </button>
           </div>
           <button ref={lastFocusElementRef} onClick={handleCloseButtonOrOverLayClick}
-            className="cross-btn" type="button" aria-label="Закрыть попап"
+            className="cross-btn" type="button" aria-label="Закрыть попап" data-testid ='closeButton'
           >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />

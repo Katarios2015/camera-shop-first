@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../components/hooks/index-hook';
+import { useAppDispatch, useAppSelector } from '../../hooks/index-hook';
 import { getProduct } from '../../store/goods-data/selectors';
 import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ReviewBlock from '../../components/review-block/review-block';
@@ -71,7 +71,14 @@ function ProductPage():JSX.Element|undefined{
                   <div className="product__content">
                     <h1 className="title title--h3">{product.name}</h1>
                     <RatingStars item={product} isReview={false}/>
-                    <p className="product__price"><span className="visually-hidden">Цена:</span>{product.price} ₽</p>
+                    <p className="product__price"
+                      data-testid = 'productPrice'
+                    >
+                      <span className="visually-hidden">
+                        Цена:
+                      </span>
+                      {product.price} ₽
+                    </p>
                     <button className="btn btn--purple" type="button">
                       <svg width={24} height={16} aria-hidden="true">
                         <use xlinkHref="#icon-add-basket" />
@@ -112,7 +119,7 @@ function ProductPage():JSX.Element|undefined{
                         <div
                           className={isTabDescriptionActive ? 'tabs__element is-active' : 'tabs__element'}
                         >
-                          <div className="product__tabs-text">
+                          <div data-testid='description' className="product__tabs-text">
                             {product.description}
                           </div>
                         </div>

@@ -1,5 +1,5 @@
 import ProductCard from '../product-card/product-card';
-import { useAppSelector } from '../hooks/index-hook';
+import { useAppSelector } from '../../hooks/index-hook';
 import { getGoods } from '../../store/goods-data/selectors';
 
 function CatalogList():JSX.Element {

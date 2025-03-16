@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { GoodType } from '../../types/good-type';
-import {useAppDispatch} from '../hooks/index-hook';
+import {useAppDispatch} from '../../hooks/index-hook';
 import { openModalCall } from '../../store/modal-call/modal-call';
 import { AppRoute } from '../app/const';
-import ProductRate from '../rating-stars/rating-stars';
+import RatingStars from '../rating-stars/rating-stars';
 
 type ProductCardPropsType={
   good:GoodType;
@@ -21,17 +21,18 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
 
 
   return(
-    <div className="product-card">
+    <div className="product-card" data-testid='productCard'>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`${good.previewImgWebp} , ${good.previewImgWebp2x} 2x`} />
-          <img src={good.previewImg} srcSet={`${good.previewImg2x} 2x`} width={280} height={240} alt={good.name} />
+          <img src={good.previewImg} srcSet={`${good.previewImg2x} 2x`} width={280} height={240} alt={good.name} data-testid='image'/>
         </picture>
       </div>
       <div className="product-card__info">
-        <ProductRate item={good} isReview={false}/>
-        <p className="product-card__title">{good.name}</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{good.price} ₽
+        <RatingStars item={good} isReview={false}/>
+        <p className="product-card__title" data-testid='productTitle'>{good.name}</p>
+        <p className="product-card__price" data-testid='productCardPrice'>
+          <span className="visually-hidden">Цена:</span>{good.price} ₽
         </p>
       </div>
       <div className="product-card__buttons">
