@@ -1,6 +1,7 @@
 import {datatype, image} from 'faker';
 import { GoodType } from '../types/good-type';
 import {Review} from '../types/review-type';
+import { NewOrder } from '../types/order-type';
 
 
 import { Action } from 'redux';
@@ -38,6 +39,12 @@ export const makeFakeReview = ():Review =>({
   disadvantage: datatype.string(),
   review: datatype.string(),
   rating: datatype.number(),
+});
+
+export const makeFakeNewOrder = ():NewOrder=> ({
+  camerasIds: [datatype.number()],
+  coupon: null,
+  tel: datatype.number().toString(),
 });
 
 

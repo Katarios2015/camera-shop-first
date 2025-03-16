@@ -25,7 +25,7 @@ function ReviewBlock(props:ReviewsProps){
   const {reviews} = props;
   const STEP = 3;
 
-  const [reviewsVisibleCount, setReviewsVisibleCount] = useState(3);
+  const [reviewsVisibleCount, setReviewsVisibleCount] = useState(STEP);
   const slicedReviews = reviews.slice(0,reviewsVisibleCount);
 
   const handleMoreButtonClick = ()=>{
@@ -41,28 +41,30 @@ function ReviewBlock(props:ReviewsProps){
           </div>
           <ul className="review-block__list">
             { slicedReviews.map((review)=>(
-              <li key={review.id} className="review-card">
+              <li key={review.id} className="review-card" data-testid='reviewItem'>
                 <div className="review-card__head">
-                  <p className="title title--h4">{review.userName}</p>
-                  <time className="review-card__data" dateTime="2022-04-13">{dayjs(review.createAt).locale('ru').format('DD MMMM')}</time>
+                  <p className="title title--h4" data-testid='userName'>{review.userName}</p>
+                  <time className="review-card__data" dateTime={review.createAt.toString()} data-testid='date'>
+                    {dayjs(review.createAt).locale('ru').format('DD MMMM')}
+                  </time>
                 </div>
                 <RatingStars item={review} isReview/>
                 <ul className="review-card__list">
                   <li className="item-list"><span className="item-list__title">Достоинства:</span>
-                    <p className="item-list__text">{review.advantage}</p>
+                    <p className="item-list__text" data-testid='advantage'>{review.advantage}</p>
                   </li>
                   <li className="item-list"><span className="item-list__title">Недостатки:</span>
-                    <p className="item-list__text">{review.disadvantage}</p>
+                    <p className="item-list__text" data-testid='disadvantage'>{review.disadvantage}</p>
                   </li>
                   <li className="item-list"><span className="item-list__title">Комментарий:</span>
-                    <p className="item-list__text">{review.review}</p>
+                    <p className="item-list__text" data-testid='reviewText'>{review.review}</p>
                   </li>
                 </ul>
               </li>
             ))}
           </ul>
-          <div className="review-block__buttons">
-            {slicedReviews.length === reviews.length ? ''
+          <div className="review-block__buttons" data-testid='buttonsBlock'>
+            {(slicedReviews.length === reviews.length || reviews.length < STEP) ? ''
               :
               <button
                 onClick={handleMoreButtonClick}

@@ -1,5 +1,5 @@
 import {Link, useLocation, useParams} from 'react-router-dom';
-import { useAppSelector } from '../hooks/index-hook';
+import { useAppSelector } from '../../hooks/index-hook';
 import { getGoods } from '../../store/goods-data/selectors';
 import { AppRoute } from '../app/const';
 

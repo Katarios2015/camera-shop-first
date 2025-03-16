@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {NameSpace} from '../../store/const';
+import {NameSpace} from '../const';
 import { ModalCallType } from '../../types/state-type';
 import { postOrder } from '../api-actions';
 import {toast} from 'react-toastify';

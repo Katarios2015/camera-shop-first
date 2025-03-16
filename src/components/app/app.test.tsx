@@ -3,7 +3,7 @@ import { MemoryHistory, createMemoryHistory } from 'history';
 import {AppRoute} from './const';
 import App from './app';
 import {withHistory, withStore} from '../../utils/mock-component';
-import {makeFakeStore, makeFakeProductCard, makeFakeReview} from '../../utils/mocks';
+import {makeFakeStore, makeFakeProductCard} from '../../utils/mocks';
 
 describe('Application Routing', () => {
   let mockHistory: MemoryHistory;
@@ -36,7 +36,6 @@ describe('Application Routing', () => {
 
   it('should render "ProductPage" when user navigate to "/camera/{productId}"', () => {
     const fakeProductPage = makeFakeProductCard();
-    const fakeReview = makeFakeReview();
     const withHistoryComponent = withHistory(<App />, mockHistory);
     const { withStoreComponent } = withStore(withHistoryComponent, makeFakeStore({DATA_GOODS: {
       goods:[fakeProductPage],
@@ -48,21 +47,19 @@ describe('Application Routing', () => {
       isFormDisabled: false
     },
     DATA_REVIEWS:{
-      reviews:[fakeReview]
+      reviews:[]
     },
     }));
+    const productPrice = 'productPrice';
+    const description = 'description';
     mockHistory.push(`/${AppRoute.Product}/${fakeProductPage.id}`);
     render(withStoreComponent);
-    //expect(screen.getAllByText(fakeProductPage.name)).toBeInTheDocument();
-    //expect(screen.getByText(fakeProductPage.previewImg)).toBeInTheDocument();
-    //expect(screen.getByText(fakeProductPage.price)).toBeInTheDocument();
+    expect(screen.getAllByText(fakeProductPage.name).length).toBe(2);
+    expect(screen.getByTestId(productPrice).textContent).toBe(`Цена:${fakeProductPage.price} ₽`);
     expect(screen.getByText(/Характеристики/i)).toBeInTheDocument();
     expect(screen.getByText(/Описание/i)).toBeInTheDocument();
-    //expect(screen.getByText(fakeProductPage.description)).toBeInTheDocument();
+    expect(screen.getByTestId(description).textContent).toBe(fakeProductPage.description);
     expect(screen.getByText(/Отзывы/i)).toBeInTheDocument();
-    //expect(screen.getByText(fakeReview.userName)).toBeInTheDocument();
-    //expect(screen.getByText(fakeReview.createAt)).toBeInTheDocument();
-    //expect(screen.getByText(fakeReview.review)).toBeInTheDocument();
   });
   it('should render "NotFound" when user navigate to non-existent route', () => {
     const withHistoryComponent = withHistory(<App />, mockHistory);
