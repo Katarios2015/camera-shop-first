@@ -3,3 +3,9 @@ export enum AppRoute {
   Product = 'camera',
   NotFound = 'not-found'
 }
+
+export enum BreadCrumbId {
+  Catalog='CatalogMain',
+  Product = 'ProductPage',
+  NotFound = 'NotFoundPage'
+}

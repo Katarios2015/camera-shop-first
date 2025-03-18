@@ -1,15 +1,24 @@
-import {Link, useLocation, useParams} from 'react-router-dom';
+import {Link, useParams, NavLink} from 'react-router-dom';
 import { useAppSelector } from '../../hooks/index-hook';
 import { getGoods } from '../../store/goods-data/selectors';
 import { AppRoute } from '../app/const';
 
+import useBreadcrumbs from 'use-react-router-breadcrumbs';
+
 function BreadCrumbs():JSX.Element{
   const params = useParams();
   const currentProductId = Number(params.id);
-  const currentLocation = useLocation();
   const goods = useAppSelector(getGoods);
   const currentProduct = goods.find((item)=>item.id === currentProductId);
 
+  const routes = [
+    { path: `${AppRoute.Catalog}`, breadcrumb: 'Каталог'},
+    { path: `/${AppRoute.Product}/:id`, breadcrumb: currentProduct?.name },
+    { path: `/${AppRoute.Product}`, breadcrumb: null },
+    { path: '/:id', breadcrumb: null },
+  ];
+
+  const breadcrumbs = useBreadcrumbs(routes);
   return(
     <div className="breadcrumbs">
       <div className="container">
@@ -21,23 +30,24 @@ function BreadCrumbs():JSX.Element{
               </svg>
             </Link>
           </li>
-          { currentLocation.pathname.includes(AppRoute.Catalog) && (
-            <li className="breadcrumbs__item">
-              { currentLocation.pathname.includes(`/${AppRoute.Product}/`) ?
-                <Link className="breadcrumbs__link" to={'/'}>
-                Каталог
-                  <svg width={5} height={8} aria-hidden="true">
-                    <use xlinkHref="#icon-arrow-mini"/>
-                  </svg>
-                </Link> :
-                <span className="breadcrumbs__link breadcrumbs__link--active">Каталог</span>}
+          {breadcrumbs.map(({breadcrumb, match })=>(
+            <li key={match.pathname} className="breadcrumbs__item">
+              <NavLink className={({isActive})=>isActive ? 'breadcrumbs__link--active' : 'breadcrumbs__link'} to={match.pathname}>
+                {
+                  ({isActive})=>(
+                    isActive ?
+                      <span className="breadcrumbs__link breadcrumbs__link--active"> {breadcrumb}</span> :
+                      <>
+                        {breadcrumb}
+                        <svg width={5} height={8} aria-hidden="true">
+                          <use xlinkHref="#icon-arrow-mini" />
+                        </svg>
+                      </>
+                  )
+                }
+              </NavLink>
             </li>
-          )}
-          { currentLocation.pathname.includes(`/${AppRoute.Product}/${currentProductId}`) && (
-            <li className="breadcrumbs__item">
-              <span className="breadcrumbs__link breadcrumbs__link--active"> {currentProduct?.name}</span>
-            </li>
-          )}
+          ))}
         </ul>
       </div>
     </div>
