@@ -1,10 +1,10 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState} from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/index-hook';
-import useFocus from '../../hooks/use-focus';
+
 import { getIsModalCallActive, getActiveGood } from '../../store/modal-call/selectors';
 import { closeModalCall } from '../../store/modal-call/modal-call';
 import useTrapFocus from '../../hooks/use-trap-focus';
-
+import useFocus from '../../hooks/use-focus';
 import { postOrder } from '../../store/api-actions';
 import { getServerFomatPhone } from './common';
 import { getDisabledFlag } from '../../store/modal-call/selectors';
@@ -50,16 +50,16 @@ function PopupCall():JSX.Element {
 
   useEffect(()=>{
     if(isModalCallActive){
-      const onEscKeyDown = (event:KeyboardEvent) => {
+      const handleDocumentEscKeyDown = (event:KeyboardEvent) => {
         if(event.key === 'Escape') {
           event.preventDefault();
           document.body.style.overflow = 'visible';
           dispatch(closeModalCall());
         }
       };
-      document.addEventListener('keydown', onEscKeyDown);
+      document.addEventListener('keydown', handleDocumentEscKeyDown);
       return ()=> {
-        document.removeEventListener('keydown', onEscKeyDown);
+        document.removeEventListener('keydown', handleDocumentEscKeyDown);
       };
     }
   },[isModalCallActive, dispatch]);
@@ -103,7 +103,8 @@ function PopupCall():JSX.Element {
               <input ref={firstFocusElementRef}
                 onInput = {handlePhoneInputChange}
                 type="tel"
-                pattern="^(\+7|8)[\(]{0,1}\d{3}[\)]{0,1}\d{3}[\-]{0,1}\d{2}[\-]{0,1}\d{2}"
+                pattern="^(\+7|8)([\(]|\s){0,1}9{1}\d{2}([\)]|\s){0,1}\d{3}([\-]|\s){0,1}\d{2}([\-]|\s){0,1}\d{2}"
+                title="допустимые форматы: +7(9XX)XXX-XX-XX/8(9XX)XXX-XX-XX, скобки и тире необязательны"
                 defaultValue={''}
                 name="user-tel" placeholder="Введите ваш номер" required
                 data-testid='phoneInput'

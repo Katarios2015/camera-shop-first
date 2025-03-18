@@ -1,8 +1,10 @@
 import {render, screen} from '@testing-library/react';
 
+
 import {makeFakeStore, makeFakeReview} from '../../utils/mocks';
 import {withHistory, withStore} from '../../utils/mock-component';
 import userEvent from '@testing-library/user-event';
+import { fireEvent } from '@testing-library/react';
 
 import ReviewBlock from './review-block';
 import RatingStars from '../rating-stars/rating-stars';
@@ -121,6 +123,47 @@ describe('Component: ReviewBlock', () => {
 
     await userEvent.click(screen.getByRole('button'));
     const reviewItems = screen.getAllByTestId(reviewItemId);
+    expect(reviewItems.length).toBe(fakeReviews.length);
+    expect(screen.getByTestId(buttonsBlockId).textContent).toBe('');
+  });
+
+
+  it('should render reviews after scroll', () => {
+    vi.mock('../rating-stars/rating-stars');
+    const fakeReview = makeFakeReview();
+    const fakeReviews = [makeFakeReview(), makeFakeReview(), makeFakeReview(), makeFakeReview()];
+
+    const reviewItemId = 'reviewItem';
+    const buttonsBlockId = 'buttonsBlock';
+
+    const { withStoreComponent } = withStore(<ReviewBlock reviews={fakeReviews}/>, makeFakeStore(
+      {DATA_GOODS: {
+        goods:[],
+        product: null,
+      },
+      MODAL_CALL: {
+        isModalCallActive: false,
+        activeGood: null,
+        isFormDisabled: false
+      },
+      DATA_REVIEWS:{
+        reviews:[fakeReview]
+      },
+      }
+    ));
+
+    const preparedComponent = withHistory(withStoreComponent);
+    render(preparedComponent);
+    //const button = screen.getByTestId(buttonsBlockId);
+
+    expect(screen.getByTestId(buttonsBlockId).textContent).toBe('Показать больше отзывов');
+    const windowHeight = document.body.clientHeight;
+
+    fireEvent.scroll(document,{target:{scrollY:windowHeight}});
+    //нужно понять как прокрутиться к концу документа
+
+    const reviewItems = screen.getAllByTestId(reviewItemId);
+
     expect(reviewItems.length).toBe(fakeReviews.length);
     expect(screen.getByTestId(buttonsBlockId).textContent).toBe('');
   });

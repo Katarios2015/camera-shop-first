@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index-hook';
 import { getProduct } from '../../store/goods-data/selectors';
+import { getReviews } from '../../store/reviews-data/selectors';
+import { fetchDataProductPage, fetchDataReviews } from '../../store/api-actions';
+
 import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ReviewBlock from '../../components/review-block/review-block';
-import { fetchDataProductPage, fetchDataReviews } from '../../store/api-actions';
-import { createStars, STARS_COUNT, StarIconUrl} from '../../components/rating-stars/common';
 import RatingStars from '../../components/rating-stars/rating-stars';
-import { getReviews } from '../../store/reviews-data/selectors';
 
 
 function ProductPage():JSX.Element|undefined{
@@ -17,13 +17,6 @@ function ProductPage():JSX.Element|undefined{
   const activeProductId = Number(params.id);
   const product = useAppSelector(getProduct);
   const reviews = useAppSelector(getReviews);
-
-  const stars = createStars(STARS_COUNT, StarIconUrl.IconStar);
-  const ratingStars = product ? createStars(product.rating, StarIconUrl.IconFullStar) : null;
-
-  if(ratingStars && product){
-    stars.splice(0,product.rating,...ratingStars);
-  }
 
   const [isTabDescriptionActive,setTabDescriptionActive] = useState(true);
   const [isTabPropertyActive,setTabPropertyActive] = useState(false);
@@ -89,17 +82,19 @@ function ProductPage():JSX.Element|undefined{
                         <button
                           onClick={handleTabControlButtonClick}
                           className={isTabPropertyActive ? 'tabs__control is-active' : 'tabs__control'} type="button"
+                          data-testid='propertyButton'
                         >Характеристики
                         </button>
                         <button
                           onClick={handleTabControlButtonClick}
-                          className={isTabDescriptionActive ? 'tabs__control is-active' : 'tabs__control'} type="button"
+                          className={isTabDescriptionActive ? 'tabs__control is-active' : 'tabs__control'} type="button" data-testid='descriptionButton'
                         >Описание
                         </button>
                       </div>
                       <div className="tabs__content">
                         <div
                           className={isTabPropertyActive ? 'tabs__element is-active' : 'tabs__element'}
+                          data-testid = 'tabElement'
                         >
                           <ul className="product__tabs-list">
                             <li className="item-list"><span className="item-list__title">Артикул:</span>
@@ -132,7 +127,7 @@ function ProductPage():JSX.Element|undefined{
             <ReviewBlock reviews={reviews}/>
           </div>
         </main>
-        <Link onClick={handleAnchorLinkClick} className="up-btn" to='#header'>
+        <Link onClick={handleAnchorLinkClick} className="up-btn" to='#header' data-testid='upButton'>
           <svg width={12} height={18} aria-hidden="true">
             <use xlinkHref="#icon-arrow2" />
           </svg>

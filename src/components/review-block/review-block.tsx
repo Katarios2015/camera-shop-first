@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Review } from '../../types/review-type';
 import RatingStars from '../rating-stars/rating-stars';
 import dayjs from 'dayjs';
@@ -27,12 +27,31 @@ function ReviewBlock(props:ReviewsProps){
 
   const [reviewsVisibleCount, setReviewsVisibleCount] = useState(STEP);
   const slicedReviews = reviews.slice(0,reviewsVisibleCount);
+  const moreButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleMoreButtonClick = ()=>{
     setReviewsVisibleCount(reviewsVisibleCount + STEP);
   };
+
+  useEffect(()=>{
+    const handleWindowScroll = ()=>{
+      if(moreButtonRef.current){
+        const coords = moreButtonRef.current.getBoundingClientRect();
+        const windowHeight = document.documentElement.clientHeight;
+        const bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
+        if(bottomVisible){
+          setReviewsVisibleCount(reviewsVisibleCount + STEP);
+        }
+      }
+    };
+    document.addEventListener('scroll', handleWindowScroll);
+    return ()=> {
+      document.removeEventListener('scroll', handleWindowScroll);
+    };
+  },[reviewsVisibleCount]);
+
   return(
-    <div className="page-content__section">
+    <div className="page-content__section" data-testid='reviewsSection'>
       <section className="review-block">
         <div className="container">
           <div className="page-content__headed">
@@ -68,6 +87,7 @@ function ReviewBlock(props:ReviewsProps){
               :
               <button
                 onClick={handleMoreButtonClick}
+                ref={moreButtonRef}
                 className="btn btn--purple" type="button"
               >Показать больше отзывов
               </button>}

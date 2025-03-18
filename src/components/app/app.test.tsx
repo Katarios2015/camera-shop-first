@@ -11,10 +11,10 @@ describe('Application Routing', () => {
     mockHistory = createMemoryHistory();
   });
   it('should render "MainCatalog" when user navigate to "/"', () => {
-    const fakeProductPage = makeFakeProductCard();
+    const fakeProduct = makeFakeProductCard();
     const withHistoryComponent = withHistory(<App />, mockHistory);
     const { withStoreComponent } = withStore(withHistoryComponent, makeFakeStore({DATA_GOODS: {
-      goods:[fakeProductPage],
+      goods:[fakeProduct],
       product: null
     },
     MODAL_CALL: {
