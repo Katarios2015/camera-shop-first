@@ -19,9 +19,10 @@ function ProductPage():JSX.Element|undefined{
   const product = useAppSelector(getProduct);
   const reviews = useAppSelector(getReviews);
   const similarGoods = useAppSelector(getSimilarGoods);
+  const isButtonCartTrue = false;
 
-  const [isTabDescriptionActive,setTabDescriptionActive] = useState(true);
-  const [isTabPropertyActive,setTabPropertyActive] = useState(false);
+  const [isTabDescriptionActive,setTabDescriptionActive] = useState(false);
+  const [isTabPropertyActive,setTabPropertyActive] = useState(true);
 
   const handleAnchorLinkClick = ()=>{
     window.scrollTo({
@@ -75,7 +76,7 @@ function ProductPage():JSX.Element|undefined{
                       </span>
                       {product.price.toLocaleString('ru-RU')} ₽
                     </p>
-                    <button className="btn btn--purple" type="button">
+                    <button className="btn btn--purple" type="button" style={{visibility:isButtonCartTrue ? 'visible' : 'hidden'}}>
                       <svg width={24} height={16} aria-hidden="true">
                         <use xlinkHref="#icon-add-basket" />
                       </svg>Добавить в корзину
