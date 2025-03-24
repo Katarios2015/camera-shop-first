@@ -11,11 +11,9 @@ describe('Component: FooterList', () => {
     const footerListId = 'footerList';
     const footerListItemId = 'footerListItem';
 
-
     render(withHistory(<FooterList footerItems={NAVIGATE_ITEMS}/>));
     const footerListContainer = screen.getByTestId(footerListId);
     const footerItems = screen.getAllByTestId(footerListItemId);
-
 
     expect(footerListContainer).toBeInTheDocument();
     expect(footerItems.length).toBe(NAVIGATE_ITEMS.length);

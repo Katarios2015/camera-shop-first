@@ -22,7 +22,6 @@ describe('Component: PopupCall', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
@@ -60,7 +59,6 @@ describe('Component: PopupCall', () => {
       MODAL_CALL: {
         isModalCallActive: true,
         activeGood: fakeProduct,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
@@ -123,7 +121,6 @@ describe('Component: PopupCall', () => {
       MODAL_CALL: {
         isModalCallActive: true,
         activeGood: fakeProduct,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
@@ -161,7 +158,6 @@ describe('Component: PopupCall', () => {
       MODAL_CALL: {
         isModalCallActive: true,
         activeGood: fakeProduct,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
@@ -196,7 +192,7 @@ describe('Component: PopupCall', () => {
 
     const phoneInputId = 'phoneInput';
     const submitButtonId = 'submitButton';
-    const wrongTestPhone = '+795004456858';
+    const wrongTestPhone = '+7';
 
     const { withStoreComponent, mockStore, mockAxiosAdapter} = withStore(<PopupCall/>, makeFakeStore(
       {DATA_GOODS: {
@@ -206,7 +202,6 @@ describe('Component: PopupCall', () => {
       MODAL_CALL: {
         isModalCallActive: true,
         activeGood: fakeProduct,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]

@@ -38,7 +38,6 @@ describe('Component: ReviewBlock', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[fakeReview]
@@ -108,7 +107,6 @@ describe('Component: ReviewBlock', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[fakeReview]
@@ -144,7 +142,6 @@ describe('Component: ReviewBlock', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[fakeReview]
@@ -154,13 +151,11 @@ describe('Component: ReviewBlock', () => {
 
     const preparedComponent = withHistory(withStoreComponent);
     render(preparedComponent);
-    //const button = screen.getByTestId(buttonsBlockId);
 
     expect(screen.getByTestId(buttonsBlockId).textContent).toBe('Показать больше отзывов');
     const windowHeight = document.body.clientHeight;
 
     fireEvent.scroll(document,{target:{scrollY:windowHeight}});
-    //нужно понять как прокрутиться к концу документа
 
     const reviewItems = screen.getAllByTestId(reviewItemId);
 

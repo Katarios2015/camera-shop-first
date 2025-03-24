@@ -1,5 +1,5 @@
 import { NameSpace } from '../const';
-import { getActiveGood, getIsModalCallActive, getDisabledFlag} from './selectors';
+import { getActiveGood, getIsModalCallActive} from './selectors';
 import {makeFakeProductCard} from '../../utils/mocks';
 
 describe('ModalCall selectors', () => {
@@ -19,11 +19,5 @@ describe('ModalCall selectors', () => {
     const {isModalCallActive} = state[NameSpace.ModalCall];
     const result = getIsModalCallActive(state);
     expect(result).toBe(isModalCallActive);
-  });
-
-  it('should return DisabledFlag', () => {
-    const {isFormDisabled} = state[NameSpace.ModalCall];
-    const result = getDisabledFlag(state);
-    expect(result).toBe(isFormDisabled);
   });
 });

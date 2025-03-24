@@ -13,8 +13,8 @@ function BreadCrumbs():JSX.Element{
 
   const routes = [
     { path: `${AppRoute.Catalog}`, breadcrumb: 'Каталог'},
-    { path: `/${AppRoute.Product}/:id`, breadcrumb: currentProduct?.name },
-    { path: `/${AppRoute.Product}`, breadcrumb: null },
+    { path: `${AppRoute.Product}/:id`, breadcrumb: currentProduct?.name },
+    { path: `${AppRoute.Product}`, breadcrumb: null },
     { path: '/:id', breadcrumb: null },
   ];
 

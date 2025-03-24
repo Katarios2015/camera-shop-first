@@ -7,21 +7,27 @@ import RatingStars from '../rating-stars/rating-stars';
 
 type ProductCardPropsType={
   good:GoodType;
+  isActiveClass: string;
+  isSlider:boolean;
+  styleSimilar:object;
 }
 
 function ProductCard(props: ProductCardPropsType):JSX.Element{
-  const {good} = props;
+  const {good, isActiveClass, isSlider, styleSimilar} = props;
   const isInCart = false;
   const dispatch = useAppDispatch();
+
+  const regex = /\p{Script=Cyrillic}+ /u;
+  const splitIntoWords = (text:string)=> text.split(/\s+/);
+  const splittedNames = splitIntoWords(good.name);
 
   const handleProductCardButtonClick = ()=> {
     dispatch(openModalCall(good));
     document.body.style.overflow = 'hidden';
   };
 
-
   return(
-    <div className="product-card" data-testid='productCard'>
+    <div className={isSlider ? `product-card ${isActiveClass}` : 'product-card'} data-testid='productCard' style={isSlider ? styleSimilar : {}}>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`${good.previewImgWebp} , ${good.previewImgWebp2x} 2x`} />
@@ -30,9 +36,11 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
       </div>
       <div className="product-card__info">
         <RatingStars item={good} isReview={false}/>
-        <p className="product-card__title" data-testid='productTitle'>{good.name}</p>
+        <p className="product-card__title" data-testid='productTitle'>
+          {regex.test(good.name) ? `${splittedNames[0]} «${splittedNames.slice(1).toString().replace(/,/g,' ')}»` : `${good.category} ${good.name}`}
+        </p>
         <p className="product-card__price" data-testid='productCardPrice'>
-          <span className="visually-hidden">Цена:</span>{good.price} ₽
+          <span className="visually-hidden">Цена:</span>{good.price.toLocaleString('ru-RU')} ₽
         </p>
       </div>
       <div className="product-card__buttons">

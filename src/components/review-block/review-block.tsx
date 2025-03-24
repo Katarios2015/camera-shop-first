@@ -24,10 +24,12 @@ dayjs.updateLocale('ru', {
 function ReviewBlock(props:ReviewsProps){
   const {reviews} = props;
   const STEP = 3;
+  const isReviewButtonHidden = true;
 
   const [reviewsVisibleCount, setReviewsVisibleCount] = useState(STEP);
   const slicedReviews = reviews.slice(0,reviewsVisibleCount);
   const moreButtonRef = useRef<HTMLButtonElement>(null);
+  const reviewsContainerRef = useRef<HTMLDivElement>(null);
 
   const handleMoreButtonClick = ()=>{
     setReviewsVisibleCount(reviewsVisibleCount + STEP);
@@ -38,7 +40,7 @@ function ReviewBlock(props:ReviewsProps){
       if(moreButtonRef.current){
         const coords = moreButtonRef.current.getBoundingClientRect();
         const windowHeight = document.documentElement.clientHeight;
-        const bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
+        const bottomVisible = coords.bottom <= windowHeight;
         if(bottomVisible){
           setReviewsVisibleCount(reviewsVisibleCount + STEP);
         }
@@ -51,12 +53,12 @@ function ReviewBlock(props:ReviewsProps){
   },[reviewsVisibleCount]);
 
   return(
-    <div className="page-content__section" data-testid='reviewsSection'>
+    <div className="page-content__section" data-testid='reviewsSection' ref={reviewsContainerRef}>
       <section className="review-block">
         <div className="container">
           <div className="page-content__headed">
             <h2 className="title title--h3">Отзывы</h2>
-            {/*<button class="btn" type="button">Оставить свой отзыв</button>*/}
+            {isReviewButtonHidden ? '' : <button className="btn" type="button">Оставить свой отзыв</button>}
           </div>
           <ul className="review-block__list">
             { slicedReviews.map((review)=>(

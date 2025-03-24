@@ -4,10 +4,11 @@ import { getGoods } from '../../store/goods-data/selectors';
 
 function CatalogList():JSX.Element {
   const goods = useAppSelector(getGoods);
+
   return(
     <div className="cards catalog__cards">
       { goods.map((item)=>(
-        <ProductCard good={item} key={item.id}/>
+        <ProductCard good={item} key={item.id} isSlider={false} isActiveClass={''} styleSimilar={{}}/>
       ))}
     </div>
   );

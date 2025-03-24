@@ -7,7 +7,6 @@ import {toast} from 'react-toastify';
 const initialState: ModalCallType = {
   isModalCallActive: false,
   activeGood: null,
-  isFormDisabled: false
 };
 
 export const modalCall = createSlice({
@@ -24,14 +23,7 @@ export const modalCall = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(postOrder.pending, (state) => {
-        state.isFormDisabled = true;
-      })
-      .addCase(postOrder.fulfilled, (state) => {
-        state.isFormDisabled = false;
-      })
-      .addCase(postOrder.rejected, (state) => {
-        state.isFormDisabled = false;
+      .addCase(postOrder.rejected, () => {
         toast.warn('Ошибка отправки формы, попробуйте позже');
       });
   },

@@ -26,7 +26,6 @@ describe('Component: ProductPage', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
@@ -72,7 +71,6 @@ describe('Component: ProductPage', () => {
         MODAL_CALL: {
           isModalCallActive: false,
           activeGood: null,
-          isFormDisabled: false
         },
         DATA_REVIEWS:{
           reviews:[]
@@ -87,32 +85,6 @@ describe('Component: ProductPage', () => {
     expect(mockHandleClick).toBeCalledTimes(1);
   });
 
-  /*it('should called mockHandle 1 time', async () => {
-    const fakeProduct = makeFakeProductCard();
-    const { withStoreComponent } = withStore(<ProductPage/>, makeFakeStore(
-      {DATA_GOODS: {
-        goods:[fakeProduct],
-        product: fakeProduct,
-      },
-      MODAL_CALL: {
-        isModalCallActive: false,
-        activeGood: null,
-        isFormDisabled: false
-      },
-      DATA_REVIEWS:{
-        reviews:[]
-      },
-      }
-    ));
-
-    const preparedComponent = withHistory(withStoreComponent);
-    render(preparedComponent);
-    await userEvent.click(screen.getByTestId('upButton'));
-    expect(window.scrollTo).toHaveBeenCalledWith({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });*/
   it('tabElement should have another className whit click to propertyButton', async () => {
 
     const fakeProduct = makeFakeProductCard();
@@ -127,7 +99,6 @@ describe('Component: ProductPage', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
@@ -160,7 +131,6 @@ describe('Component: ProductPage', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
