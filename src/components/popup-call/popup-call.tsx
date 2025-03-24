@@ -25,7 +25,6 @@ function PopupCall():JSX.Element {
     const phoneValue = event.target.value;
     const regPattern = /^(\+7|8)(\(|\s){0,1}9{1}\d{2}(\)|\s){0,1}\d{3}(-|\s){0,1}\d{2}(-|\s){0,1}\d{2}$/g;
 
-
     if(regPattern.test(phoneValue)){
       setPhone(phoneValue);
       setValidationClass('is-valid');
@@ -58,6 +57,8 @@ function PopupCall():JSX.Element {
       })).unwrap().then(()=>{
         handleCloseButtonOrOverLayClick();
       });
+    }else if(phone === ''){
+      setValidationClass('is-invalid');
     }
   };
 
