@@ -20,7 +20,6 @@ describe('Application Routing', () => {
     MODAL_CALL: {
       isModalCallActive: false,
       activeGood: null,
-      isFormDisabled: false
     },
     DATA_REVIEWS:{
       reviews:[]
@@ -44,7 +43,6 @@ describe('Application Routing', () => {
     MODAL_CALL: {
       isModalCallActive: false,
       activeGood: null,
-      isFormDisabled: false
     },
     DATA_REVIEWS:{
       reviews:[]
@@ -52,10 +50,10 @@ describe('Application Routing', () => {
     }));
     const productPrice = 'productPrice';
     const description = 'description';
-    mockHistory.push(`/${AppRoute.Product}/${fakeProductPage.id}`);
+    mockHistory.push(`${AppRoute.Product}/${fakeProductPage.id}`);
     render(withStoreComponent);
     expect(screen.getAllByText(fakeProductPage.name).length).toBe(2);
-    expect(screen.getByTestId(productPrice).textContent).toBe(`Цена:${fakeProductPage.price} ₽`);
+    expect(screen.getByTestId(productPrice).textContent).toBe(`Цена:${fakeProductPage.price.toLocaleString('ru')} ₽`);
     expect(screen.getByText(/Характеристики/i)).toBeInTheDocument();
     expect(screen.getByText(/Описание/i)).toBeInTheDocument();
     expect(screen.getByTestId(description).textContent).toBe(fakeProductPage.description);

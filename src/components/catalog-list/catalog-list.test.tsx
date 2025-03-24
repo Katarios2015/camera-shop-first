@@ -17,7 +17,6 @@ describe('Component: CatalogList', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]

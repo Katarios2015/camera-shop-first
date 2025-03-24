@@ -4,12 +4,13 @@ import {useParams} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index-hook';
 import { getProduct } from '../../store/goods-data/selectors';
 import { getReviews } from '../../store/reviews-data/selectors';
-import { fetchDataProductPage, fetchDataReviews } from '../../store/api-actions';
+import { getSimilarGoods } from '../../store/slider-data/selectors';
+import { fetchDataProductPage, fetchDataReviews, fetchDataSimilarGoods } from '../../store/api-actions';
 
 import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ReviewBlock from '../../components/review-block/review-block';
 import RatingStars from '../../components/rating-stars/rating-stars';
-
+import SimilarProductSlider from '../../components/similar-products-slider/similar-product-slider';
 
 function ProductPage():JSX.Element|undefined{
   const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ function ProductPage():JSX.Element|undefined{
   const activeProductId = Number(params.id);
   const product = useAppSelector(getProduct);
   const reviews = useAppSelector(getReviews);
+  const similarGoods = useAppSelector(getSimilarGoods);
 
   const [isTabDescriptionActive,setTabDescriptionActive] = useState(true);
   const [isTabPropertyActive,setTabPropertyActive] = useState(false);
@@ -43,6 +45,7 @@ function ProductPage():JSX.Element|undefined{
     if (activeProductId) {
       dispatch(fetchDataProductPage(activeProductId));
       dispatch(fetchDataReviews(activeProductId));
+      dispatch(fetchDataSimilarGoods(activeProductId));
     }
 
   }, [activeProductId, dispatch]);
@@ -70,7 +73,7 @@ function ProductPage():JSX.Element|undefined{
                       <span className="visually-hidden">
                         Цена:
                       </span>
-                      {product.price} ₽
+                      {product.price.toLocaleString('ru-RU')} ₽
                     </p>
                     <button className="btn btn--purple" type="button">
                       <svg width={24} height={16} aria-hidden="true">
@@ -124,6 +127,7 @@ function ProductPage():JSX.Element|undefined{
                 </div>
               </section>
             </div>
+            {similarGoods ? <SimilarProductSlider similarGoods={similarGoods}/> : ''}
             <ReviewBlock reviews={reviews}/>
           </div>
         </main>

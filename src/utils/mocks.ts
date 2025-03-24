@@ -3,6 +3,7 @@ import { GoodType } from '../types/good-type';
 import {Review} from '../types/review-type';
 import { NewOrder } from '../types/order-type';
 
+import { PromoSlideType } from '../types/promo-slide-type';
 
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
@@ -23,6 +24,15 @@ export const makeFakeProductCard = ():GoodType =>({
   price: datatype.number(),
   rating: datatype.number(),
   reviewCount: datatype.number(),
+  previewImg: image.imageUrl(),
+  previewImg2x: image.imageUrl(),
+  previewImgWebp: image.imageUrl(),
+  previewImgWebp2x: image.imageUrl(),
+});
+
+export const makeFakePromoCard = ():PromoSlideType =>({
+  id: datatype.number(),
+  name:  datatype.string(),
   previewImg: image.imageUrl(),
   previewImg2x: image.imageUrl(),
   previewImgWebp: image.imageUrl(),
@@ -59,10 +69,14 @@ export const makeFakeStore = (initialState?: Partial<State>): State => ({
   MODAL_CALL: {
     isModalCallActive: false,
     activeGood: null,
-    isFormDisabled: false
   },
   DATA_REVIEWS:{
     reviews:[]
+  },
+
+  DATA_SLIDER:{
+    promoSlides:[],
+    similarGoods:[]
   },
 
   ...initialState ?? {},

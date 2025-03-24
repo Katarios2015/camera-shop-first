@@ -23,7 +23,6 @@ describe('Component: MainCatalog', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
@@ -38,7 +37,5 @@ describe('Component: MainCatalog', () => {
     expect(CatalogList).toBeCalledTimes(1);
     expect(PopupCall).toBeCalledTimes(1);
     expect(screen.getByText(/Каталог фото- и видеотехники/i)).toBeInTheDocument();
-    expect(screen.getByText(/Профессиональная камера от известного производителя/i)).toBeInTheDocument();
-    expect(screen.getByAltText('баннер')).toBeInTheDocument();
   });
 });

@@ -1,7 +1,7 @@
 export enum AppRoute {
   Catalog ='/',
-  Product = 'camera',
-  NotFound = 'not-found'
+  Product = '/camera',
+  NotFound = '/not-found'
 }
 
 export enum BreadCrumbId {

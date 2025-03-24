@@ -4,12 +4,12 @@ import { Provider } from 'react-redux';
 import App from './components/app/app';
 import { ToastContainer } from 'react-toastify';
 import {store} from './store/index';
-import { fetchDataGoods } from './store/api-actions';
+import { fetchDataGoods, fetchDataPromoSlides } from './store/api-actions';
 import HistoryRouter from './components/history-route/history-route';
 import browserHistory from './browser-history';
 
 store.dispatch(fetchDataGoods());
-
+store.dispatch(fetchDataPromoSlides());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

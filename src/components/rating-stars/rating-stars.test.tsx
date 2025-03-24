@@ -21,7 +21,6 @@ describe('Component: RatingStars', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
@@ -53,7 +52,6 @@ describe('Component: RatingStars', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[fakeReview]

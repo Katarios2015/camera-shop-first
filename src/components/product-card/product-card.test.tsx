@@ -16,7 +16,7 @@ describe('Component: ProductCard', () => {
     const productTitleId = 'productTitle';
 
 
-    const { withStoreComponent } = withStore(<ProductCard good={fakeProduct}/>, makeFakeStore(
+    const { withStoreComponent } = withStore(<ProductCard isSlider={false} isActiveClass={''} styleSimilar={{}} good={fakeProduct}/>, makeFakeStore(
       {DATA_GOODS: {
         goods:fakeProducts,
         product: null
@@ -24,7 +24,6 @@ describe('Component: ProductCard', () => {
       MODAL_CALL: {
         isModalCallActive: false,
         activeGood: null,
-        isFormDisabled: false
       },
       DATA_REVIEWS:{
         reviews:[]
@@ -40,8 +39,8 @@ describe('Component: ProductCard', () => {
     expect(image).toBeInTheDocument();
     expect(RatingStars).toBeCalledTimes(1);
 
-    expect(screen.getByTestId(productCardPriceId).textContent).toBe(`Цена:${fakeProduct.price} ₽`);
-    expect(screen.getByTestId(productTitleId).textContent).toBe(fakeProduct.name);
+    expect(screen.getByTestId(productCardPriceId).textContent).toBe(`Цена:${fakeProduct.price.toLocaleString('ru')} ₽`);
+    expect(screen.getByTestId(productTitleId).textContent).toBe(`${fakeProduct.category} ${fakeProduct.name}`);
     expect(screen.getByRole('link')).toBeInTheDocument();
     expect(screen.getByText(/Подробнее/i)).toBeInTheDocument();
   });
