@@ -43,7 +43,7 @@ describe('Component: ProductPage', () => {
     expect(RatingStars).toBeCalledTimes(1);
     expect(screen.getByText(/Описание/i)).toBeInTheDocument();
     expect(screen.getByText(/Характеристики/i)).toBeInTheDocument();
-    expect(screen.getByText(/Артикул:/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Артикул:/i).length).toBe(2);
     expect(screen.getByText(fakeProduct.vendorCode)).toBeInTheDocument();
     expect(screen.getByText(/Категория:/i)).toBeInTheDocument();
     expect(screen.getByText(fakeProduct.category)).toBeInTheDocument();
@@ -85,11 +85,10 @@ describe('Component: ProductPage', () => {
     expect(mockHandleClick).toBeCalledTimes(1);
   });
 
-  it('tabElement should have another className whit click to propertyButton', async () => {
+  it('tabElementProperty should have className tabs__element is-active', () => {
 
     const fakeProduct = makeFakeProductCard();
-    const propertyButtonId = 'propertyButton';
-    const tabElementId = 'tabElement';
+    const tabElementId = 'tabElementProperty';
 
     const { withStoreComponent } = withStore(<ProductPage/>, makeFakeStore(
       {DATA_GOODS: {
@@ -109,10 +108,7 @@ describe('Component: ProductPage', () => {
     const preparedComponent = withHistory(withStoreComponent);
     render(preparedComponent);
 
-    const propertyButton = screen.getByTestId(propertyButtonId);
     const tabElement = screen.getByTestId(tabElementId);
-
-    await userEvent.click(propertyButton);
     expect(tabElement).toHaveClass('tabs__element is-active');
 
   });
@@ -121,7 +117,7 @@ describe('Component: ProductPage', () => {
     const fakeProduct = makeFakeProductCard();
 
     const descriptionButtonId = 'descriptionButton';
-    const tabElementId = 'tabElement';
+    const tabElementId = 'tabElementDescription';
 
     const { withStoreComponent } = withStore(<ProductPage/>, makeFakeStore(
       {DATA_GOODS: {

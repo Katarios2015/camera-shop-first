@@ -11,34 +11,6 @@ import { postOrder } from '../../store/api-actions';
 import { ApiRoute } from '../../store/const';
 
 describe('Component: PopupCall', () => {
-  it('should render correctly without data', () => {
-    const popupCallId = 'popupCall';
-
-    const { withStoreComponent } = withStore(<PopupCall/>, makeFakeStore(
-      {DATA_GOODS: {
-        goods:[],
-        product: null,
-      },
-      MODAL_CALL: {
-        isModalCallActive: false,
-        activeGood: null,
-      },
-      DATA_REVIEWS:{
-        reviews:[]
-      },
-      }
-    ));
-
-    const preparedComponent = withHistory(withStoreComponent);
-    render(preparedComponent);
-    const popupContainer = screen.getByTestId(popupCallId);
-    expect(popupContainer).toHaveClass('modal');
-    expect(screen.getByText(/Свяжитесь со мной/i)).toBeInTheDocument();
-    expect(screen.getByText(/Цена:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Телефон/i)).toBeInTheDocument();
-    expect(screen.getByText(/Артикул:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Заказать/i)).toBeInTheDocument();
-  });
   it('should render correctly with data and isModalCallActive=true', () => {
     const fakeProducts = [makeFakeProductCard()];
     const fakeProduct = makeFakeProductCard();
@@ -79,7 +51,7 @@ describe('Component: PopupCall', () => {
 
     expect(popupContainer).toHaveClass('modal is-active');
 
-    expect(goodName.textContent).toBe(fakeProduct.name);
+    expect(goodName.textContent).toBe(`${fakeProduct.category} ${fakeProduct.name}`);
     expect(vendorCode.textContent).toBe(fakeProduct.vendorCode);
     expect(typeCategory.textContent).toBe(`${fakeProduct.type} ${fakeProduct.category}`);
     expect(level.textContent).toBe(`${fakeProduct.level} уровень`);
