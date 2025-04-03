@@ -14,11 +14,6 @@ function Search():JSX.Element{
   const [requestLength, setRequestLength] = useState(0);
   const [filtredBySearchGoods, setFiltredBySearchGoods] = useState<GoodType[]>([]);
 
-  /*const slisedArr= goods.slice();
-  slisedArr.sort((a,b)=>a.name - b.name)
-  console.log(slisedArr);*/
-
-
   const handleSearchInputRefInput = ()=>{
 
     if(searchInputRef.current){
@@ -43,7 +38,6 @@ function Search():JSX.Element{
       setFiltredBySearchGoods([]);
     }
   };
-
 
   return(
     <>
@@ -95,9 +89,7 @@ function Search():JSX.Element{
         </svg>
       </a>
     </>
-
   );
-
 }
 
 export default Search;
