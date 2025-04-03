@@ -51,7 +51,9 @@ describe('Application Routing', () => {
     const productPrice = 'productPrice';
     const description = 'description';
     mockHistory.push(`${AppRoute.Product}/${fakeProductPage.id}`);
+
     render(withStoreComponent);
+
     expect(screen.getAllByText(fakeProductPage.name).length).toBe(2);
     expect(screen.getByTestId(productPrice).textContent).toBe(`Цена:${fakeProductPage.price.toLocaleString('ru')} ₽`);
     expect(screen.getByText(/Характеристики/i)).toBeInTheDocument();
