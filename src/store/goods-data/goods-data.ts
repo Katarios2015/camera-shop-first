@@ -3,6 +3,7 @@ import {NameSpace} from '../../store/const';
 import { GoodsDataType } from '../../types/state-type';
 import { fetchDataGoods, fetchDataProductPage } from '../api-actions';
 
+
 const initialState: GoodsDataType = {
   goods: [],
   product: null

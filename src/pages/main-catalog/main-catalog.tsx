@@ -2,6 +2,7 @@ import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
 import CatalogList from '../../components/catalog-list/catalog-list';
 import PopupCall from '../../components/popup-call/popup-call';
 import PromoSlider from '../../components/promo-slider/promo-slider.tsx';
+import SortCatalog from '../../components/sort-catalog/sort-catalog.tsx';
 function MainCatalog():JSX.Element{
   return(
     <div className="wrapper">
@@ -17,6 +18,7 @@ function MainCatalog():JSX.Element{
                   <img src="img/banner.png" />
                 </div>
                 <div className="catalog__content">
+                  <SortCatalog/>
                   <CatalogList />
                 </div>
               </div>

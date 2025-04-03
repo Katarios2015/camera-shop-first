@@ -12,6 +12,11 @@ export type GoodsDataType = {
   product: GoodType|null;
 }
 
+export type SortType = {
+  sortTypeName: string;
+  sortDirection: string;
+}
+
 export type ModalCallType = {
   isModalCallActive: boolean;
   activeGood:GoodType|null;
