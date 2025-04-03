@@ -5,6 +5,7 @@ import { NAVIGATE_ITEMS } from '../navigate-list/const';
 import {SOURCE_ITEMS, SUPPORT_ITEMS, SOCIAL_ITEMS} from './const';
 import SocialList from '../social-list/social-list';
 import { AppRoute } from '../app/const';
+import Search from '../search/search';
 
 function Layout():JSX.Element {
   return(
@@ -17,6 +18,7 @@ function Layout():JSX.Element {
             </svg>
           </Link>
           <NavigateList/>
+          <Search/>
         </div>
       </header>
       <Outlet />
