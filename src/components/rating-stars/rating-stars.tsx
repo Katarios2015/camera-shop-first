@@ -5,10 +5,11 @@ import { createStars} from './common';
 type RatingStarsPropsType={
   item:GoodType|Review;
   isReview : boolean;
+  reviewsCount: number;
 }
 
 function RatingStars(prop:RatingStarsPropsType){
-  const {item, isReview} = prop;
+  const {item, isReview, reviewsCount} = prop;
   const stars = createStars(item.rating);
 
   return(
@@ -23,7 +24,7 @@ function RatingStars(prop:RatingStarsPropsType){
         :
         <>
           <p className="visually-hidden">Рейтинг: {item.rating}</p>
-          <p className="rate__count" data-testid='rateCount'><span className="visually-hidden">Всего оценок:</span>{item.rating}</p>
+          <p className="rate__count" data-testid='rateCount'><span className="visually-hidden">Всего оценок:</span>{reviewsCount}</p>
         </>}
     </div>
   );

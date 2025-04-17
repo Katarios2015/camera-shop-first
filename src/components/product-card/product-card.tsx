@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 import { GoodType } from '../../types/good-type';
-import {useAppDispatch} from '../../hooks/index-hook';
+import {useAppDispatch, useAppSelector} from '../../hooks/index-hook';
 import { openModalCall } from '../../store/modal-call/modal-call';
 import { AppRoute } from '../app/const';
 import RatingStars from '../rating-stars/rating-stars';
+
+import { getIsModalCallActive,getActiveGood } from '../../store/modal-call/selectors';
+import { useEffect, useRef } from 'react';
 
 type ProductCardPropsType={
   good:GoodType;
@@ -16,6 +19,9 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
   const {good, isActiveClass, isSlider, styleSimilar} = props;
   const isInCart = false;
   const dispatch = useAppDispatch();
+  const isModalCallActive = useAppSelector(getIsModalCallActive);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const lastActiveGood = useAppSelector(getActiveGood);
 
   const regex = /\p{Script=Cyrillic}+ /u;
   const splitIntoWords = (text:string)=> text.split(/\s+/);
@@ -26,6 +32,12 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
     document.body.style.overflow = 'hidden';
   };
 
+  useEffect(()=>{
+    if(!isModalCallActive && lastActiveGood?.id === good.id && buttonRef.current){
+      buttonRef.current.focus();
+    }
+  },[isModalCallActive, good.id, lastActiveGood?.id]);
+
   return(
     <div className={isSlider ? `product-card ${isActiveClass}` : 'product-card'} data-testid='productCard' style={isSlider ? styleSimilar : {}}>
       <div className="product-card__img">
@@ -35,7 +47,7 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
         </picture>
       </div>
       <div className="product-card__info">
-        <RatingStars item={good} isReview={false}/>
+        <RatingStars item={good} isReview={false} reviewsCount={good.reviewCount}/>
         <p className="product-card__title" data-testid='productTitle'>
           {regex.test(good.name) ? `${splittedNames[0]} «${splittedNames.slice(1).toString().replace(/,/g,' ')}»` : `${good.category} ${good.name}`}
         </p>
@@ -52,6 +64,7 @@ function ProductCard(props: ProductCardPropsType):JSX.Element{
           </Link>
           :
           <button
+            ref={buttonRef}
             onClick={handleProductCardButtonClick}
             className="btn btn--purple product-card__btn" type="button"
           >Купить
