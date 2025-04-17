@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import {useParams} from 'react-router-dom';
+import { useEffect, useState, MouseEvent } from 'react';
+import {useParams, useSearchParams} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index-hook';
 import { getProduct } from '../../store/goods-data/selectors';
 import { getReviews } from '../../store/reviews-data/selectors';
@@ -12,6 +12,9 @@ import ReviewBlock from '../../components/review-block/review-block';
 import RatingStars from '../../components/rating-stars/rating-stars';
 import SimilarProductSlider from '../../components/similar-products-slider/similar-product-slider';
 import PopupCall from '../../components/popup-call/popup-call';
+import { getCirilicParamValue, CirilicPageTabs } from '../../components/filter-form/common';
+
+const TAB_SEARCH_KEY = 'tab';
 
 function ProductPage():JSX.Element|undefined{
   const dispatch = useAppDispatch();
@@ -20,10 +23,20 @@ function ProductPage():JSX.Element|undefined{
   const product = useAppSelector(getProduct);
   const reviews = useAppSelector(getReviews);
   const similarGoods = useAppSelector(getSimilarGoods);
+
   const isButtonCartTrue = false;
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [isTabDescriptionActive,setTabDescriptionActive] = useState(false);
   const [isTabPropertyActive,setTabPropertyActive] = useState(true);
+
+  useEffect(() => {
+    if(Array.from(searchParams.values()).includes(CirilicPageTabs.Description)){
+      setTabDescriptionActive(true);
+      setTabPropertyActive(false);
+    }
+  }, [searchParams, isTabDescriptionActive]);
 
   const handleAnchorLinkClick = ()=>{
     window.scrollTo({
@@ -32,24 +45,24 @@ function ProductPage():JSX.Element|undefined{
     });
   };
 
-  const handleTabControlButtonClick = ()=>{
-    if(isTabDescriptionActive){
-      setTabDescriptionActive(false);
-      setTabPropertyActive(true);
-    } else {
-      setTabDescriptionActive(true);
-      setTabPropertyActive(false);
+  const handleTabControlButtonClick = (event: MouseEvent<HTMLButtonElement>)=>{
+    const buttonName = event.currentTarget.name;
+    const cirilicButtonName = getCirilicParamValue(buttonName);
+
+    if (!searchParams.getAll(TAB_SEARCH_KEY).includes(cirilicButtonName)) {
+      searchParams.set(TAB_SEARCH_KEY, cirilicButtonName);
+      setSearchParams(searchParams);
     }
+    setTabDescriptionActive(buttonName === 'description');
+    setTabPropertyActive(buttonName === 'property');
   };
 
   useEffect(() => {
-
     if (activeProductId) {
       dispatch(fetchDataProductPage(activeProductId));
       dispatch(fetchDataReviews(activeProductId));
       dispatch(fetchDataSimilarGoods(activeProductId));
     }
-
   }, [activeProductId, dispatch]);
 
   if(product){
@@ -68,7 +81,9 @@ function ProductPage():JSX.Element|undefined{
                   </div>
                   <div className="product__content">
                     <h1 className="title title--h3">{product.name}</h1>
-                    <RatingStars item={product} isReview={false}/>
+                    <RatingStars item={product} isReview={false}
+                      reviewsCount={reviews.length}
+                    />
                     <p className="product__price"
                       data-testid = 'productPrice'
                     >
@@ -88,9 +103,11 @@ function ProductPage():JSX.Element|undefined{
                           onClick={handleTabControlButtonClick}
                           className={isTabPropertyActive ? 'tabs__control is-active' : 'tabs__control'} type="button"
                           data-testid='propertyButton'
+                          name='property'
                         >Характеристики
                         </button>
                         <button
+                          name='description'
                           onClick={handleTabControlButtonClick}
                           className={isTabDescriptionActive ? 'tabs__control is-active' : 'tabs__control'} type="button" data-testid='descriptionButton'
                         >Описание

@@ -69,7 +69,7 @@ function ReviewBlock(props:ReviewsProps){
                     {dayjs(review.createAt).locale('ru').format('DD MMMM')}
                   </time>
                 </div>
-                <RatingStars item={review} isReview/>
+                <RatingStars item={review} isReview reviewsCount={0}/>
                 <ul className="review-card__list">
                   <li className="item-list"><span className="item-list__title">Достоинства:</span>
                     <p className="item-list__text" data-testid='advantage'>{review.advantage}</p>

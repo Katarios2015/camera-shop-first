@@ -3,7 +3,7 @@ import {SortTypes, SortDirectionTypes, SortParamsKeys} from './common';
 import { useSearchParams } from 'react-router-dom';
 
 function SortCatalog():JSX.Element{
-  const [searchParam, setSearchParam] = useSearchParams({
+  const [searchParams, setSearchParams] = useSearchParams({
     [SortParamsKeys.Sort]:SortTypes.Price,
     [SortParamsKeys.Direction]:SortDirectionTypes.LowToHigh
   });
@@ -11,21 +11,16 @@ function SortCatalog():JSX.Element{
   const handleDirectionInputClick = (event: MouseEvent<HTMLInputElement>)=>{
     if(event.currentTarget){
       const inputId = event.currentTarget.id;
-      setSearchParam(
-        { [SortParamsKeys.Sort]: searchParam.get(SortParamsKeys.Sort) || SortTypes.Price,
-          [SortParamsKeys.Direction]:`${inputId}`
-        });
+      searchParams.set(SortParamsKeys.Direction,`${inputId}`);
+      setSearchParams(searchParams);
     }
   };
 
   const handleSortTypeInputClick = (event: MouseEvent<HTMLInputElement>)=>{
     if(event.currentTarget){
       const inputId = event.currentTarget.id;
-      setSearchParam(
-        { [SortParamsKeys.Sort]: `${inputId}`,
-          [SortParamsKeys.Direction]: searchParam.get('sort-direction') || 'up'
-        }
-      );
+      searchParams.set(SortParamsKeys.Sort,`${inputId}`);
+      setSearchParams(searchParams);
     }
   };
   return(
@@ -40,7 +35,7 @@ function SortCatalog():JSX.Element{
                 type="radio"
                 id="sortPrice"
                 name="sort"
-                defaultChecked={searchParam.get('sort') === SortTypes.Price}
+                defaultChecked={searchParams.get(SortParamsKeys.Sort) === SortTypes.Price}
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>
@@ -50,7 +45,7 @@ function SortCatalog():JSX.Element{
                 type="radio"
                 id="sortPopular"
                 name="sort"
-                defaultChecked={searchParam.get(SortParamsKeys.Sort) === SortTypes.Popular}
+                defaultChecked={searchParams.get(SortParamsKeys.Sort) === SortTypes.Popular}
               />
               <label htmlFor="sortPopular">по популярности</label>
             </div>
@@ -62,7 +57,7 @@ function SortCatalog():JSX.Element{
                 type="radio"
                 id="up"
                 name="sort-icon"
-                defaultChecked={searchParam.get(SortParamsKeys.Direction) === SortDirectionTypes.LowToHigh}
+                defaultChecked={searchParams.get(SortParamsKeys.Direction) === SortDirectionTypes.LowToHigh}
                 aria-label="По возрастанию"
               />
               <label htmlFor="up">
@@ -77,7 +72,7 @@ function SortCatalog():JSX.Element{
                 type="radio"
                 id="down"
                 name="sort-icon"
-                defaultChecked={searchParam.get(SortParamsKeys.Direction) === SortDirectionTypes.HighToLow}
+                defaultChecked={searchParams.get(SortParamsKeys.Direction) === SortDirectionTypes.HighToLow}
                 aria-label="По убыванию"
               />
               <label htmlFor="down">

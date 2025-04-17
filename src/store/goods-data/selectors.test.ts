@@ -7,7 +7,8 @@ describe('GoodsData selectors', () => {
   const state = {
     [NameSpace.GoodsData]: {
       goods: [makeFakeProductCard()],
-      product: makeFakeProductCard()
+      product: makeFakeProductCard(),
+      filtredGoods: [makeFakeProductCard()],
     }
   };
   it('should return product', () => {
@@ -19,5 +20,10 @@ describe('GoodsData selectors', () => {
     const {goods} = state[NameSpace.GoodsData];
     const result = getGoods(state);
     expect(result).toBe(goods);
+  });
+  it('should return filtredGoods', () => {
+    const {filtredGoods} = state[NameSpace.GoodsData];
+    const result = getGoods(state);
+    expect(result).toBe(filtredGoods);
   });
 });

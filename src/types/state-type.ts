@@ -9,7 +9,9 @@ export type AppDispatch = typeof store.dispatch;
 
 export type GoodsDataType = {
   goods:GoodType[];
+  filtredGoods:GoodType[];
   product: GoodType|null;
+  isReset: boolean;
 }
 
 export type SortType = {
