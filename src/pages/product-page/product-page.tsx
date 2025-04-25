@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
-import { useEffect, useState, MouseEvent } from 'react';
-import {useParams, useSearchParams} from 'react-router-dom';
+import { useEffect} from 'react';
+import {useParams} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/index-hook';
 import { getProduct } from '../../store/goods-data/selectors';
 import { getReviews } from '../../store/reviews-data/selectors';
@@ -12,9 +12,8 @@ import ReviewBlock from '../../components/review-block/review-block';
 import RatingStars from '../../components/rating-stars/rating-stars';
 import SimilarProductSlider from '../../components/similar-products-slider/similar-product-slider';
 import PopupCall from '../../components/popup-call/popup-call';
-import { getCirilicParamValue, CirilicPageTabs } from '../../components/filter-form/common';
+import ProductTabs from '../../components/product-tabs/product-tabs';
 
-const TAB_SEARCH_KEY = 'tab';
 
 function ProductPage():JSX.Element|undefined{
   const dispatch = useAppDispatch();
@@ -26,35 +25,11 @@ function ProductPage():JSX.Element|undefined{
 
   const isButtonCartTrue = false;
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const [isTabDescriptionActive,setTabDescriptionActive] = useState(false);
-  const [isTabPropertyActive,setTabPropertyActive] = useState(true);
-
-  useEffect(() => {
-    if(Array.from(searchParams.values()).includes(CirilicPageTabs.Description)){
-      setTabDescriptionActive(true);
-      setTabPropertyActive(false);
-    }
-  }, [searchParams, isTabDescriptionActive]);
-
   const handleAnchorLinkClick = ()=>{
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-  };
-
-  const handleTabControlButtonClick = (event: MouseEvent<HTMLButtonElement>)=>{
-    const buttonName = event.currentTarget.name;
-    const cirilicButtonName = getCirilicParamValue(buttonName);
-
-    if (!searchParams.getAll(TAB_SEARCH_KEY).includes(cirilicButtonName)) {
-      searchParams.set(TAB_SEARCH_KEY, cirilicButtonName);
-      setSearchParams(searchParams);
-    }
-    setTabDescriptionActive(buttonName === 'description');
-    setTabPropertyActive(buttonName === 'property');
   };
 
   useEffect(() => {
@@ -97,52 +72,7 @@ function ProductPage():JSX.Element|undefined{
                         <use xlinkHref="#icon-add-basket" />
                       </svg>Добавить в корзину
                     </button>
-                    <div className="tabs product__tabs">
-                      <div className="tabs__controls product__tabs-controls">
-                        <button
-                          onClick={handleTabControlButtonClick}
-                          className={isTabPropertyActive ? 'tabs__control is-active' : 'tabs__control'} type="button"
-                          data-testid='propertyButton'
-                          name='property'
-                        >Характеристики
-                        </button>
-                        <button
-                          name='description'
-                          onClick={handleTabControlButtonClick}
-                          className={isTabDescriptionActive ? 'tabs__control is-active' : 'tabs__control'} type="button" data-testid='descriptionButton'
-                        >Описание
-                        </button>
-                      </div>
-                      <div className="tabs__content">
-                        <div
-                          className={isTabPropertyActive ? 'tabs__element is-active' : 'tabs__element'}
-                          data-testid = 'tabElementProperty'
-                        >
-                          <ul className="product__tabs-list">
-                            <li className="item-list"><span className="item-list__title">Артикул:</span>
-                              <p className="item-list__text"> {product.vendorCode}</p>
-                            </li>
-                            <li className="item-list"><span className="item-list__title">Категория:</span>
-                              <p className="item-list__text">{product.category}</p>
-                            </li>
-                            <li className="item-list"><span className="item-list__title">Тип камеры:</span>
-                              <p className="item-list__text">{product.type}</p>
-                            </li>
-                            <li className="item-list"><span className="item-list__title">Уровень:</span>
-                              <p className="item-list__text">{product.level}</p>
-                            </li>
-                          </ul>
-                        </div>
-                        <div
-                          data-testid = 'tabElementDescription'
-                          className={isTabDescriptionActive ? 'tabs__element is-active' : 'tabs__element'}
-                        >
-                          <div data-testid='description' className="product__tabs-text">
-                            {product.description}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <ProductTabs product={product}/>
                   </div>
                 </div>
               </section>
@@ -160,8 +90,6 @@ function ProductPage():JSX.Element|undefined{
       </div>
     );
   }
-
-
 }
 
 export default ProductPage;
