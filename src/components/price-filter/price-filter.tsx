@@ -1,91 +1,36 @@
 import { ChangeEvent, useEffect, useState} from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getFiltredGoods, getIsReset } from '../../store/goods-data/selectors';
-import {FilterParamsKeys} from '../filter-form/common';
-import { useAppSelector, useAppDispatch } from '../../hooks/index-hook';
 
-import { resetFilters } from '../../store/goods-data/goods-data';
+import {getFiltredGoods, getIsReset} from '../../store/goods-data/selectors';
+import {FilterParamsKeys} from '../filter-form/common';
+import {useAppSelector, useAppDispatch } from '../../hooks/index-hook';
+import {resetFilters} from '../../store/goods-data/goods-data';
+
+import usePriceParams from '../../hooks/use-price-params';
+import useValidatePrice from '../../hooks/use-validate-price';
+import useDefaultGoodsPrices from '../../hooks/use-default-goods-prices';
 
 function PriceFilter(): JSX.Element | null {
   const dispatch = useAppDispatch();
   const isReset = useAppSelector(getIsReset);
-  const [searchParams, setSearchParams] = useSearchParams();
-
   const filtredGoods = useAppSelector(getFiltredGoods);
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const [minimumPriceValue, setMinimumPriceValue] = useState<string>('');
   const [maximumPriceValue, setMaximumPriceValue] = useState<string>('');
-  const [autoFlag, setAutoFlag] = useState(false);
 
-  const searchMaximumPrice = searchParams.get(FilterParamsKeys.MaximumPrice);
-  const searchMinimumPrice = searchParams.get(FilterParamsKeys.MinimumPrice);
-  const searchTypes = searchParams.getAll(FilterParamsKeys.Type);
-  const searchCategories = searchParams.getAll(FilterParamsKeys.Category);
-  const searchLevels = searchParams.getAll(FilterParamsKeys.Level);
+  const updatePriceParams = usePriceParams();
 
-  let minimumGoodPrice:number;
-  let maximumGoodPrice:number;
+  const {minimumGoodPrice, maximumGoodPrice} = useDefaultGoodsPrices(filtredGoods);
 
-  if (filtredGoods.length === 0) {
-    minimumGoodPrice = 0;
-    maximumGoodPrice = 0;
-  }else{
-    const goodsSortedByPrice = [...filtredGoods].sort((a, b) => a.price - b.price);
-    minimumGoodPrice = goodsSortedByPrice[0].price;
-    maximumGoodPrice = goodsSortedByPrice[goodsSortedByPrice.length - 1].price;
-  }
+  const {
+    validateMinimumCurrentValue,
+    validateMaximumCurrentValue
+  } = useValidatePrice(minimumGoodPrice, maximumGoodPrice, Number(minimumPriceValue), Number(maximumPriceValue));
 
   useEffect(() => {
-
-    const newParams = new URLSearchParams(searchParams);
-    let shouldUpdate = false;
-
-    if (searchMinimumPrice && Number(searchMinimumPrice) < minimumGoodPrice) {
-      newParams.set(FilterParamsKeys.MinimumPrice, minimumGoodPrice.toString());
-      setMinimumPriceValue(minimumGoodPrice.toString());
-      shouldUpdate = true;
-      setAutoFlag(true);
-    }
-
-    if (maximumGoodPrice !== 0 && searchMaximumPrice && Number(searchMaximumPrice) > maximumGoodPrice) {
-      newParams.set(FilterParamsKeys.MaximumPrice, maximumGoodPrice.toString());
-      setMaximumPriceValue(maximumGoodPrice.toString());
-
-      shouldUpdate = true;
-      setAutoFlag(true);
-    }
-
-    if(autoFlag && Number(maximumPriceValue) !== 0){
-      if (
-        maximumPriceValue &&
-    minimumPriceValue &&
-    Number(maximumPriceValue) < Number(minimumPriceValue) &&
-    Number(searchMaximumPrice) !== Number(minimumPriceValue)
-      ) {
-        newParams.delete(FilterParamsKeys.MaximumPrice);
-        setMaximumPriceValue('');
-        shouldUpdate = true;
-        setAutoFlag(false);
-      }
-    }
-
-    if (shouldUpdate) {
-      setSearchParams(newParams);
-    }
-  }, [minimumGoodPrice, maximumGoodPrice, searchCategories, searchTypes, searchLevels]);
-
-
-  useEffect(() => {
-    if (searchMinimumPrice !== null) {
-      setMinimumPriceValue(searchMinimumPrice);
-    } else {
-      setMinimumPriceValue('');
-    }
-
-    if (searchMaximumPrice !== null) {
-      setMaximumPriceValue(searchMaximumPrice);
-    } else {
-      setMaximumPriceValue('');
-    }
+    setMinimumPriceValue(searchParams.get(FilterParamsKeys.MinimumPrice) ?? '');
+    setMaximumPriceValue(searchParams.get(FilterParamsKeys.MaximumPrice) ?? '');
 
     if(isReset){
       setMinimumPriceValue('');
@@ -93,7 +38,7 @@ function PriceFilter(): JSX.Element | null {
       setSearchParams(searchParams);
       dispatch(resetFilters(false));
     }
-  }, [searchMinimumPrice, searchMaximumPrice, isReset, searchParams, setSearchParams, dispatch]);
+  }, [isReset, searchParams, setSearchParams, dispatch]);
 
   const handlePriceInputChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -110,50 +55,13 @@ function PriceFilter(): JSX.Element | null {
   };
 
   const handleMinimumPriceBlur = () => {
-    if (!minimumPriceValue) {
-      searchParams.delete(FilterParamsKeys.MinimumPrice);
-      setSearchParams(searchParams);
-      return;
-    }
-
-    const numericMinimumPriceValue = Number(minimumPriceValue);
-    let validatedValue = numericMinimumPriceValue;
-
-    if (numericMinimumPriceValue < minimumGoodPrice) {
-      validatedValue = minimumGoodPrice;
-      setMinimumPriceValue(validatedValue.toString());
-      searchParams.set(FilterParamsKeys.MinimumPrice, validatedValue.toString());
-      setSearchParams(searchParams);
-    }if(maximumPriceValue && numericMinimumPriceValue > Number(maximumPriceValue) || numericMinimumPriceValue > maximumGoodPrice){
-      setMinimumPriceValue('');
-      return;
-    }
-    setMinimumPriceValue(validatedValue.toString());
-    searchParams.set(FilterParamsKeys.MinimumPrice, validatedValue.toString());
-    setSearchParams(searchParams);
+    setMinimumPriceValue(validateMinimumCurrentValue(minimumPriceValue));
+    updatePriceParams(validateMinimumCurrentValue(minimumPriceValue), FilterParamsKeys.MinimumPrice);
   };
 
   const handleMaximumPriceBlur = () => {
-    if (!maximumPriceValue) {
-      return;
-    }
-
-    const numericMaximumPriceValue = Number(maximumPriceValue);
-    let validatedValue = numericMaximumPriceValue;
-
-    if (numericMaximumPriceValue > maximumGoodPrice) {
-      validatedValue = maximumGoodPrice;
-      setMaximumPriceValue(validatedValue.toString());
-      searchParams.set(FilterParamsKeys.MaximumPrice, validatedValue.toString());
-      setSearchParams(searchParams);
-    } if(minimumPriceValue && numericMaximumPriceValue < Number(minimumPriceValue) && numericMaximumPriceValue !== Number(minimumPriceValue)){
-      setMaximumPriceValue('');
-      return;
-    }
-
-    setMaximumPriceValue(validatedValue.toString());
-    searchParams.set(FilterParamsKeys.MaximumPrice, validatedValue.toString());
-    setSearchParams(searchParams);
+    setMaximumPriceValue(validateMaximumCurrentValue(maximumPriceValue));
+    updatePriceParams(validateMaximumCurrentValue(maximumPriceValue), FilterParamsKeys.MaximumPrice);
   };
 
   return (
@@ -165,7 +73,7 @@ function PriceFilter(): JSX.Element | null {
             onBlur={handleMinimumPriceBlur}
             type="number"
             name="price"
-            placeholder={`от ${minimumGoodPrice}`}
+            placeholder={`${minimumGoodPrice}`}
             value={minimumPriceValue}
           />
         </label>
@@ -178,7 +86,7 @@ function PriceFilter(): JSX.Element | null {
             value={maximumPriceValue}
             type="number"
             name="priceUp"
-            placeholder={`до ${maximumGoodPrice}`}
+            placeholder={`${maximumGoodPrice}`}
           />
         </label>
       </div>
