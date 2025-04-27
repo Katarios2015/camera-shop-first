@@ -15,7 +15,9 @@ describe('Application Routing', () => {
     const withHistoryComponent = withHistory(<App />, mockHistory);
     const { withStoreComponent } = withStore(withHistoryComponent, makeFakeStore({DATA_GOODS: {
       goods:[fakeProduct],
-      product: null
+      product: null,
+      filtredGoods: [],
+      isReset:false
     },
     MODAL_CALL: {
       isModalCallActive: false,
@@ -38,7 +40,9 @@ describe('Application Routing', () => {
     const withHistoryComponent = withHistory(<App />, mockHistory);
     const { withStoreComponent } = withStore(withHistoryComponent, makeFakeStore({DATA_GOODS: {
       goods:[fakeProductPage],
-      product: fakeProductPage
+      product: fakeProductPage,
+      filtredGoods: [],
+      isReset:false
     },
     MODAL_CALL: {
       isModalCallActive: false,

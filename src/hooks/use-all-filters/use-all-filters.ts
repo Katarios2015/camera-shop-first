@@ -1,6 +1,6 @@
-import {SortParamsKeys} from '../components/sort-catalog/common';
-import { GoodType } from '../types/good-type';
-import {FilterParamsKeys} from '../components/filter-form/common';
+import {SortParamsKeys} from '../../components/sort-catalog/common';
+import { GoodType } from '../../types/good-type';
+import {FilterParamsKeys} from '../../components/filter-form/common';
 
 
 export default function useAllFilters(sortedGoods:GoodType[], searchParams: URLSearchParams) {

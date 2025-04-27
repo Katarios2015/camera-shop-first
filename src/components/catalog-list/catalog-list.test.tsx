@@ -12,7 +12,9 @@ describe('Component: CatalogList', () => {
     const { withStoreComponent } = withStore(<CatalogList/>, makeFakeStore(
       {DATA_GOODS: {
         goods:fakeProducts,
-        product: null
+        product: null,
+        filtredGoods: fakeProducts,
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,

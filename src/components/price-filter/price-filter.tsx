@@ -1,14 +1,14 @@
-import { ChangeEvent, useEffect, useState} from 'react';
-import { useSearchParams } from 'react-router-dom';
+import {ChangeEvent, useEffect, useState} from 'react';
+import {useSearchParams } from 'react-router-dom';
 
 import {getFiltredGoods, getIsReset} from '../../store/goods-data/selectors';
 import {FilterParamsKeys} from '../filter-form/common';
 import {useAppSelector, useAppDispatch } from '../../hooks/index-hook';
 import {resetFilters} from '../../store/goods-data/goods-data';
 
-import usePriceParams from '../../hooks/use-price-params';
-import useValidatePrice from '../../hooks/use-validate-price';
-import useDefaultGoodsPrices from '../../hooks/use-default-goods-prices';
+import usePriceParams from '../../hooks/use-price-params/use-price-params';
+import useValidatePrice from '../../hooks/use-validate-price/use-validate-price';
+import useDefaultGoodsPrices from '../../hooks/use-default-good-prices/use-default-goods-prices';
 
 function PriceFilter(): JSX.Element | null {
   const dispatch = useAppDispatch();
@@ -75,6 +75,7 @@ function PriceFilter(): JSX.Element | null {
             name="price"
             placeholder={`${minimumGoodPrice}`}
             value={minimumPriceValue}
+            data-testid='inputMin'
           />
         </label>
       </div>
@@ -87,6 +88,7 @@ function PriceFilter(): JSX.Element | null {
             type="number"
             name="priceUp"
             placeholder={`${maximumGoodPrice}`}
+            data-testid='inputMax'
           />
         </label>
       </div>

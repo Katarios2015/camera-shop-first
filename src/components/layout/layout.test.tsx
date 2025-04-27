@@ -1,6 +1,7 @@
 import {render, screen} from '@testing-library/react';
 
-import {withHistory} from '../../utils/mock-component';
+import {makeFakeStore, makeFakeProductCard} from '../../utils/mocks';
+import {withHistory, withStore} from '../../utils/mock-component';
 
 import Layout from './layout';
 import SocialList from '../social-list/social-list';
@@ -17,9 +18,28 @@ describe('Component: Layout', () => {
     const headerId = 'header';
     const footerLogoId = 'footerLogo';
     const headerLogoId = 'headerLogo';
+    const fakeProduct = makeFakeProductCard();
 
+    const { withStoreComponent } = withStore(<Layout/>, makeFakeStore(
+      {DATA_GOODS: {
+        goods:[],
+        product: fakeProduct,
+        filtredGoods: [],
+        isReset:false
+      },
+      MODAL_CALL: {
+        isModalCallActive: true,
+        activeGood: fakeProduct,
+      },
+      DATA_REVIEWS:{
+        reviews:[]
+      },
+      }
+    ));
 
-    render(withHistory(<Layout/>));
+    const preparedComponent = withHistory(withStoreComponent);
+    render(preparedComponent);
+
     const footerContainer = screen.getByTestId(footerId);
     const headerContainer = screen.getByTestId(headerId);
 

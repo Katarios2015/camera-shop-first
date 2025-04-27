@@ -14,7 +14,9 @@ describe('Component: SimilarProductSlider', () => {
     const { withStoreComponent } = withStore(<SimilarProductSlider similarGoods={fakeProducts}/>, makeFakeStore(
       {DATA_GOODS: {
         goods:[],
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,

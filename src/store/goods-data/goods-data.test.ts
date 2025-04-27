@@ -7,7 +7,9 @@ describe('goodsData Slice', () => {
     const emptyAction = { type: '' };
     const expectedState = {
       goods: [],
-      product: null
+      product: null,
+      filtredGoods: [],
+      isReset:false
     };
     const result = goodsData.reducer(expectedState, emptyAction);
     expect(result).toEqual(expectedState);
@@ -17,7 +19,9 @@ describe('goodsData Slice', () => {
     const emptyAction = { type: '' };
     const expectedState = {
       goods: [],
-      product: null
+      product: null,
+      filtredGoods: [],
+      isReset:false
     };
     const result = goodsData.reducer(undefined, emptyAction);
     expect(result).toEqual(expectedState);
@@ -27,7 +31,9 @@ describe('goodsData Slice', () => {
     const mockProductCard = makeFakeProductCard();
     const expectedState = {
       goods: [mockProductCard],
-      product: null
+      product: null,
+      filtredGoods: [],
+      isReset:false
     };
     const result = goodsData.reducer(
       undefined,
@@ -40,7 +46,9 @@ describe('goodsData Slice', () => {
   it('should not set "goods" to array with good with "fetchDataGoods.rejected"', () => {
     const expectedState = {
       goods: [],
-      product: null
+      product: null,
+      filtredGoods: [],
+      isReset:false
     };
     const result = goodsData.reducer(
       undefined,
@@ -52,7 +60,9 @@ describe('goodsData Slice', () => {
     const mockProductCard = makeFakeProductCard();
     const expectedState = {
       goods: [],
-      product: mockProductCard
+      product: mockProductCard,
+      filtredGoods: [],
+      isReset:false
     };
     const result = goodsData.reducer(
       undefined,
@@ -65,7 +75,9 @@ describe('goodsData Slice', () => {
   it('should not set "product" to state with "fetchDataProductPage.rejected"', () => {
     const expectedState = {
       goods: [],
-      product: null
+      product: null,
+      filtredGoods: [],
+      isReset:false
     };
     const result = goodsData.reducer(
       undefined,

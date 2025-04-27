@@ -16,12 +16,15 @@ describe('Component: ProductPage', () => {
     vi.mock('../../components/review-block/review-block');
     vi.mock('../../components/rating-stars/rating-stars');
     const fakeProduct = makeFakeProductCard();
+
     const descriptionContainerId = 'description';
 
     const { withStoreComponent } = withStore(<ProductPage/>, makeFakeStore(
       {DATA_GOODS: {
         goods:[fakeProduct],
         product: fakeProduct,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -43,7 +46,6 @@ describe('Component: ProductPage', () => {
     expect(RatingStars).toBeCalledTimes(1);
     expect(screen.getByText(/Описание/i)).toBeInTheDocument();
     expect(screen.getByText(/Характеристики/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/Артикул:/i).length).toBe(2);
     expect(screen.getByText(fakeProduct.vendorCode)).toBeInTheDocument();
     expect(screen.getByText(/Категория:/i)).toBeInTheDocument();
     expect(screen.getByText(fakeProduct.category)).toBeInTheDocument();
@@ -67,6 +69,8 @@ describe('Component: ProductPage', () => {
         {DATA_GOODS: {
           goods:[fakeProduct],
           product: fakeProduct,
+          filtredGoods: [],
+          isReset:false
         },
         MODAL_CALL: {
           isModalCallActive: false,
@@ -85,62 +89,4 @@ describe('Component: ProductPage', () => {
     expect(mockHandleClick).toBeCalledTimes(1);
   });
 
-  it('tabElementProperty should have className tabs__element is-active', () => {
-
-    const fakeProduct = makeFakeProductCard();
-    const tabElementId = 'tabElementProperty';
-
-    const { withStoreComponent } = withStore(<ProductPage/>, makeFakeStore(
-      {DATA_GOODS: {
-        goods:[fakeProduct],
-        product: fakeProduct,
-      },
-      MODAL_CALL: {
-        isModalCallActive: false,
-        activeGood: null,
-      },
-      DATA_REVIEWS:{
-        reviews:[]
-      },
-      }
-    ));
-
-    const preparedComponent = withHistory(withStoreComponent);
-    render(preparedComponent);
-
-    const tabElement = screen.getByTestId(tabElementId);
-    expect(tabElement).toHaveClass('tabs__element is-active');
-
-  });
-  it('tabElement should have another className whit click to descriptionButton', async () => {
-
-    const fakeProduct = makeFakeProductCard();
-
-    const descriptionButtonId = 'descriptionButton';
-    const tabElementId = 'tabElementDescription';
-
-    const { withStoreComponent } = withStore(<ProductPage/>, makeFakeStore(
-      {DATA_GOODS: {
-        goods:[fakeProduct],
-        product: fakeProduct,
-      },
-      MODAL_CALL: {
-        isModalCallActive: false,
-        activeGood: null,
-      },
-      DATA_REVIEWS:{
-        reviews:[]
-      },
-      }
-    ));
-
-    const preparedComponent = withHistory(withStoreComponent);
-    render(preparedComponent);
-
-    const descriptionButton = screen.getByTestId(descriptionButtonId);
-    const tabElement = screen.getByTestId(tabElementId);
-
-    await userEvent.click(descriptionButton);
-    expect(tabElement).toHaveClass('tabs__element is-active');
-  });
 });

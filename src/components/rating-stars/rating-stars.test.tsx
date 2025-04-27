@@ -13,10 +13,12 @@ describe('Component: RatingStars', () => {
     const rateCountId = 'rateCount';
     const starsContainerId = 'starsContainer';
 
-    const { withStoreComponent } = withStore(<RatingStars item={fakeProductCard} isReview={false}/>, makeFakeStore(
+    const { withStoreComponent } = withStore(<RatingStars reviewsCount={fakeProductCard.rating} item={fakeProductCard} isReview={false}/>, makeFakeStore(
       {DATA_GOODS: {
         goods:fakeProducts,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -44,10 +46,12 @@ describe('Component: RatingStars', () => {
     const rateCountId = 'rateCount';
     const starsContainerId = 'starsContainer';
 
-    const { withStoreComponent } = withStore(<RatingStars item={fakeReview} isReview/>, makeFakeStore(
+    const { withStoreComponent } = withStore(<RatingStars reviewsCount={0} item={fakeReview} isReview/>, makeFakeStore(
       {DATA_GOODS: {
         goods:fakeProducts,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,

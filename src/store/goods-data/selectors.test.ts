@@ -1,5 +1,5 @@
 import { NameSpace } from '../const';
-import { getGoods, getProduct } from './selectors';
+import { getGoods, getProduct,getFiltredGoods } from './selectors';
 import { makeFakeProductCard } from '../../utils/mocks';
 
 
@@ -9,6 +9,7 @@ describe('GoodsData selectors', () => {
       goods: [makeFakeProductCard()],
       product: makeFakeProductCard(),
       filtredGoods: [makeFakeProductCard()],
+      isReset:false
     }
   };
   it('should return product', () => {
@@ -23,7 +24,7 @@ describe('GoodsData selectors', () => {
   });
   it('should return filtredGoods', () => {
     const {filtredGoods} = state[NameSpace.GoodsData];
-    const result = getGoods(state);
+    const result = getFiltredGoods(state);
     expect(result).toBe(filtredGoods);
   });
 });

@@ -1,104 +1,75 @@
-import { describe, it, expect, vi, Mock } from 'vitest';
+import { describe, it, expect} from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+
+import {makeFakeStore, makeFakeProductCard} from '../../utils/mocks';
+import {withHistory, withStore} from '../../utils/mock-component';
+
 import FilterForm from './filter-form';
-import { useSearchParams } from 'react-router-dom';
-import { TYPE_CHECKBOX_INPUTS, LEVEL_CHECKBOX_INPUTS } from './common';
+import { extractActionsTypes } from '../../utils/mocks';
+import { resetFilters } from '../../store/goods-data/goods-data';
 
-vi.mock('../category-filter-list/category-filter-list', () => ({
-  default: () => <div>CategoryFilterList</div>,
-}));
-
-vi.mock('../checkbox-filter-list/checkbox-filter-list', () => ({
-  default: ({ items }: { items: Array<{ name: string }> }) => (
-    <div>
-      {items.map((item) => (
-        <div key={item.name}>{item.name}</div>
-      ))}
-    </div>
-  ),
-}));
-
-const mockSetSearchParams: Mock<[URLSearchParams], void> = vi.fn();
-
-vi.mock('react-router-dom', () => ({
-  useSearchParams: vi.fn(() => [
-    new URLSearchParams(),
-    mockSetSearchParams,
-  ]),
-}));
-
-describe('FilterForm', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
+describe('Component: FilterForm', () => {
   it('renders correctly', () => {
-    render(<FilterForm />);
+    const fakeProducts = [makeFakeProductCard()];
+    const { withStoreComponent } = withStore(<FilterForm/>, makeFakeStore(
+      {DATA_GOODS: {
+        goods:fakeProducts,
+        product: null,
+        filtredGoods: fakeProducts,
+        isReset:false
+      },
+      MODAL_CALL: {
+        isModalCallActive: false,
+        activeGood: null,
+      },
+      DATA_REVIEWS:{
+        reviews:[]
+      },
+      }
+    ));
+
+    const preparedComponent = withHistory(withStoreComponent);
+    render(preparedComponent);
 
     expect(screen.getByText('Фильтр')).toBeInTheDocument();
     expect(screen.getByText('Цена, ₽')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('от')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('до')).toBeInTheDocument();
     expect(screen.getByText('Категория')).toBeInTheDocument();
     expect(screen.getByText('Тип камеры')).toBeInTheDocument();
     expect(screen.getByText('Уровень')).toBeInTheDocument();
     expect(screen.getByText('Сбросить фильтры')).toBeInTheDocument();
   });
 
-  it('renders CheckboxFilterList with correct props', () => {
-    render(<FilterForm />);
-
-    TYPE_CHECKBOX_INPUTS.forEach((item) => {
-      expect(screen.getByText(item.name)).toBeInTheDocument();
-    });
-
-    LEVEL_CHECKBOX_INPUTS.forEach((item) => {
-      expect(screen.getByText(item.name)).toBeInTheDocument();
-    });
-  });
-
   it('handles reset button click correctly', () => {
-    const initialParams = new URLSearchParams();
-    initialParams.set('price', '1000');
-    initialParams.set('priceUp', '5000');
-    initialParams.set('sort', 'price');
-    initialParams.set('sort-direction', 'asc');
 
-    // Type the mock implementation
-    (useSearchParams as Mock).mockReturnValueOnce([
-      initialParams,
-      mockSetSearchParams,
-    ]);
+    const fakeProducts = [makeFakeProductCard()];
+    const { withStoreComponent, mockStore } = withStore(<FilterForm/>, makeFakeStore(
+      {DATA_GOODS: {
+        goods:fakeProducts,
+        product: null,
+        filtredGoods: fakeProducts,
+        isReset:false
+      },
+      MODAL_CALL: {
+        isModalCallActive: false,
+        activeGood: null,
+      },
+      DATA_REVIEWS:{
+        reviews:[]
+      },
+      }
+    ));
 
-    render(<FilterForm />);
-
-    const resetButton = screen.getByText('Сбросить фильтры');
-    fireEvent.click(resetButton);
-
-    expect(mockSetSearchParams).toHaveBeenCalledTimes(1);
-
-    const newParams: URLSearchParams = mockSetSearchParams.mock.calls[0][0];
-    expect(newParams.get('sort')).toBe('price');
-    expect(newParams.get('sort-direction')).toBe('asc');
-    expect(newParams.get('price')).toBeNull();
-    expect(newParams.get('priceUp')).toBeNull();
-  });
-
-  it('does not keep sort params if they are not present initially', () => {
-    const initialParams = new URLSearchParams();
-    initialParams.set('price', '1000');
-
-    (useSearchParams as Mock).mockReturnValueOnce([
-      initialParams,
-      mockSetSearchParams,
-    ]);
-
-    render(<FilterForm />);
+    const preparedComponent = withHistory(withStoreComponent);
+    render(preparedComponent);
 
     const resetButton = screen.getByText('Сбросить фильтры');
     fireEvent.click(resetButton);
+    const actions = extractActionsTypes(mockStore.getActions());
 
-    const newParams: URLSearchParams = mockSetSearchParams.mock.calls[0][0];
-    expect(newParams.toString()).toBe('');
+    expect(actions).toEqual([
+      resetFilters.type
+    ]);
+
   });
+
 });

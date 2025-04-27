@@ -6,7 +6,7 @@ import { SortParamsKeys } from '../sort-catalog/common';
 import PriceFilter from '../price-filter/price-filter';
 import { useAppDispatch } from '../../hooks/index-hook';
 import { resetFilters } from '../../store/goods-data/goods-data';
-
+import {FilterParamsKeys} from '../filter-form/common';
 
 function FilterForm():JSX.Element{
   const dispatch = useAppDispatch();
@@ -16,13 +16,17 @@ function FilterForm():JSX.Element{
   const handleResetButtonClick = (e: React.MouseEvent)=>{
     e.preventDefault();
     const sortParams = [SortParamsKeys.Sort, SortParamsKeys.Direction];
-
+    const pageParams = searchParams.get(FilterParamsKeys.Page);
     const newParams = new URLSearchParams();
 
+    if(pageParams){
+      newParams.set(FilterParamsKeys.Page,pageParams);
+    }
+
     sortParams.forEach((param) => {
-      const value = searchParams.get(param);
-      if (value) {
-        newParams.set(param, value);
+      const searchSort = searchParams.get(param);
+      if (searchSort) {
+        newParams.set(param, searchSort);
       }
     });
     setSearchParams(newParams);
