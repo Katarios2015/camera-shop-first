@@ -3,8 +3,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks/index-hook';
 
 import { getIsModalCallActive, getActiveGood } from '../../store/modal-call/selectors';
 import { closeModalCall } from '../../store/modal-call/modal-call';
-import useTrapFocus from '../../hooks/use-trap-focus';
-import useFocus from '../../hooks/use-focus';
+import useTrapFocus from '../../hooks/use-trap-focus/use-trap-focus';
+import useFocus from '../../hooks/use-focus/use-focus';
 import { postOrder } from '../../store/api-actions';
 import { getServerFomatPhone } from './common';
 

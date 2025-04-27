@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom';
-import { useEffect} from 'react';
+import {useEffect} from 'react';
 import {useParams} from 'react-router-dom';
+
 import { useAppDispatch, useAppSelector } from '../../hooks/index-hook';
 import { getProduct } from '../../store/goods-data/selectors';
 import { getReviews } from '../../store/reviews-data/selectors';

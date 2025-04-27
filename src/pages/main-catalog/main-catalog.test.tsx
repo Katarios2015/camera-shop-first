@@ -19,6 +19,8 @@ describe('Component: MainCatalog', () => {
       {DATA_GOODS: {
         goods:[fakeProduct],
         product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,

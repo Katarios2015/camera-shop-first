@@ -18,7 +18,7 @@ function CategoryFilterList():JSX.Element{
   return(
     <>
       {CATEGORY_RADIO_INPUTS.map((item)=>(
-        <div key={item.defaultValue}className="custom-radio catalog-filter__item">
+        <div key={item.defaultValue} className="custom-radio catalog-filter__item">
           <label>
             <input
               data-testid = 'categoryButton'

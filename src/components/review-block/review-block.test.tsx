@@ -34,6 +34,8 @@ describe('Component: ReviewBlock', () => {
       {DATA_GOODS: {
         goods:[],
         product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -103,6 +105,8 @@ describe('Component: ReviewBlock', () => {
       {DATA_GOODS: {
         goods:[],
         product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -138,6 +142,8 @@ describe('Component: ReviewBlock', () => {
       {DATA_GOODS: {
         goods:[],
         product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,

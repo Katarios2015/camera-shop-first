@@ -57,13 +57,18 @@ function Pagination(): JSX.Element|null{
   const slicedPages = pages.slice(firstIndex,lastSliceElement);
 
   useEffect(() => {
+    const searchPageNumber = searchParams.get(FilterParamsKeys.Page);
+    if(searchPageNumber){
+      setSearchParams(searchParams);
+      setCurrentPage(Number(searchPageNumber));
+    }
     setIsForward(pagesCount > PAGINATION_PAGES_COUNT && pagesCount !== PAGINATION_PAGES_COUNT);
     if(currentPage === pagesCount || lastSliceElement - 1 === pages.length - 1){
       setIsForward(false);
     }
 
     setIsBackward(firstIndex !== 0);
-  }, [pagesCount, currentPage,firstIndex, lastSliceElement, pages.length]);
+  }, [searchParams, setSearchParams, pagesCount, currentPage,firstIndex, lastSliceElement, pages.length]);
 
   if(filtredGoodsLength <= PER_PAGE_GOODS_COUNT){
     return null;
@@ -80,6 +85,7 @@ function Pagination(): JSX.Element|null{
         { slicedPages.map((pageNumber)=>
           (
             <li
+              data-testid = 'pageNumber'
               key={pageNumber}
               className="pagination__item"
               onClick={(event)=>handleLinkClick(pageNumber, event)}

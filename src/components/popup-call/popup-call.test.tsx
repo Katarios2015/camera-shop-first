@@ -27,6 +27,8 @@ describe('Component: PopupCall', () => {
       {DATA_GOODS: {
         goods:fakeProducts,
         product: fakeProduct,
+        filtredGoods: fakeProducts,
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: true,
@@ -89,6 +91,8 @@ describe('Component: PopupCall', () => {
       {DATA_GOODS: {
         goods:fakeProducts,
         product: fakeProduct,
+        filtredGoods: fakeProducts,
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: true,
@@ -126,6 +130,8 @@ describe('Component: PopupCall', () => {
       {DATA_GOODS: {
         goods:fakeProducts,
         product: fakeProduct,
+        filtredGoods: fakeProducts,
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: true,
@@ -170,6 +176,8 @@ describe('Component: PopupCall', () => {
       {DATA_GOODS: {
         goods:fakeProducts,
         product: fakeProduct,
+        filtredGoods: fakeProducts,
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: true,

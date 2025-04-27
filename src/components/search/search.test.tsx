@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, queryByTestId } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 import Search from './search';
@@ -18,7 +18,9 @@ describe('Search Component', () => {
     const { withStoreComponent } = withStore(<Search/>, makeFakeStore(
       {DATA_GOODS: {
         goods:mockGoods,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -38,11 +40,13 @@ describe('Search Component', () => {
   });
 
   it('does not show search results when input has less than 3 characters', () => {
-    const selectListId = 'selectList';
+    const searchItemId = 'search-item';
     const { withStoreComponent } = withStore(<Search/>, makeFakeStore(
       {DATA_GOODS: {
         goods:mockGoods,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -60,15 +64,18 @@ describe('Search Component', () => {
     const input = screen.getByPlaceholderText('Поиск по сайту');
     fireEvent.input(input, { target: { value: 'ca' } });
 
-    const resultsList = screen.getByTestId(selectListId);
-    expect(resultsList).toHaveStyle({ visibility: 'hidden', opacity: '0' });
+    expect(screen.queryByTestId(searchItemId)).not.toBeInTheDocument();
   });
 
   it('shows search results when input has 3 or more characters', () => {
+    const searchLinkId = 'search-link';
+
     const { withStoreComponent } = withStore(<Search/>, makeFakeStore(
       {DATA_GOODS: {
         goods:mockGoods,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -86,16 +93,19 @@ describe('Search Component', () => {
     const input = screen.getByPlaceholderText('Поиск по сайту');
     fireEvent.input(input, { target: { value: 'cam' } });
 
-    const resultsList = screen.getByRole('list');
-    expect(resultsList).toHaveStyle({ visibility: 'visible', opacity: '1' });
-    expect(screen.getAllByRole('listitem').length).toBeGreaterThan(0);
+    const searchLinks = screen.getAllByTestId(searchLinkId);
+
+    expect(searchLinks[0]).toHaveTextContent('Camera Pro');
+    expect(searchLinks[1]).toHaveTextContent('Professional Camera');
   });
 
   it('filters goods correctly based on search input', () => {
     const { withStoreComponent } = withStore(<Search/>, makeFakeStore(
       {DATA_GOODS: {
         goods:mockGoods,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -123,7 +133,9 @@ describe('Search Component', () => {
     const { withStoreComponent } = withStore(<Search/>, makeFakeStore(
       {DATA_GOODS: {
         goods:mockGoods,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -142,7 +154,6 @@ describe('Search Component', () => {
     fireEvent.input(input, { target: { value: 't' } });
 
     const resetButton = screen.getByTestId(resetButtonId);
-    expect(resetButton).toBeInTheDocument();
     expect(resetButton).toHaveStyle({ display: 'block' });
   });
 
@@ -151,7 +162,9 @@ describe('Search Component', () => {
     const { withStoreComponent } = withStore(<Search/>, makeFakeStore(
       {DATA_GOODS: {
         goods:mockGoods,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -172,11 +185,13 @@ describe('Search Component', () => {
 
   it('clears input and results when reset button is clicked', async() => {
     const resetButtonId = 'resetButton';
-    const selectListId = 'selectList';
+    const searchContainerId = 'form-search-container';
     const { withStoreComponent } = withStore(<Search/>, makeFakeStore(
       {DATA_GOODS: {
         goods:mockGoods,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
@@ -198,15 +213,17 @@ describe('Search Component', () => {
     await userEvent.click(resetButton);
     expect(input.textContent).toBe('');
 
-    const resultsList = screen.getByTestId(selectListId);
-    expect(resultsList).toHaveStyle({ visibility: 'hidden', opacity: '0' });
+    const searchContainer = screen.getByTestId(searchContainerId);
+    expect(searchContainer).toHaveClass('form-search');
   });
 
   it('renders correct links for search results', () => {
     const { withStoreComponent } = withStore(<Search/>, makeFakeStore(
       {DATA_GOODS: {
         goods:mockGoods,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,

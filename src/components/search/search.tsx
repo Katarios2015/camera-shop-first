@@ -92,7 +92,7 @@ function Search():JSX.Element{
 
   return(
     <>
-      <div className={requestLength >= MINIMAL_SYMBOLS_FOR_SEARCH ? 'form-search list-opened' : 'form-search'}>
+      <div data-testid='form-search-container' className={requestLength >= MINIMAL_SYMBOLS_FOR_SEARCH ? 'form-search list-opened' : 'form-search'}>
         <form onSubmit={handleSubmit}>
           <label>
             <svg className="form-search__icon" width={16} height={16} aria-hidden="true">
@@ -113,6 +113,7 @@ function Search():JSX.Element{
           >
             {filtredBySearchGoods ? filtredBySearchGoods.map((item,index)=>(
               <li
+                data-testid='search-item'
                 onKeyDown={handleArrowKeyDown}
                 onFocus={() => setSelectedIndex(index)}
                 ref={(el) => (listItemsRef.current[index] = el)}
@@ -121,6 +122,7 @@ function Search():JSX.Element{
                 tabIndex={0}
               >
                 <Link
+                  data-testid='search-link'
                   onClick={handleResetButtonClick}
                   tabIndex={-1}
                   to={`${AppRoute.Product}/${item.id}`}

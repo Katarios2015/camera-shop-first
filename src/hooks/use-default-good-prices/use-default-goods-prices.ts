@@ -1,4 +1,4 @@
-import { GoodType } from '../types/good-type';
+import { GoodType } from '../../types/good-type';
 import { useMemo } from 'react';
 
 export default function useDefaultGoodsPrices (filtredGoods:GoodType[]) {

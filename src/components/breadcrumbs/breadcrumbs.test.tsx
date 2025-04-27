@@ -17,7 +17,9 @@ describe('Component: BreadCrumbs', () => {
     const withHistoryComponent = withHistory(<BreadCrumbs />, mockHistory);
     const { withStoreComponent } = withStore(withHistoryComponent, makeFakeStore({DATA_GOODS: {
       goods:[fakeProduct],
-      product: null
+      product: null,
+      filtredGoods: [],
+      isReset:false
     },
     MODAL_CALL: {
       isModalCallActive: false,
@@ -40,7 +42,9 @@ describe('Component: BreadCrumbs', () => {
     const withHistoryComponent = withHistory(<BreadCrumbs />, mockHistory);
     const { withStoreComponent } = withStore(withHistoryComponent, makeFakeStore({DATA_GOODS: {
       goods:[fakeProduct],
-      product: fakeProduct
+      product: fakeProduct,
+      filtredGoods: [],
+      isReset:false
     },
     MODAL_CALL: {
       isModalCallActive: false,

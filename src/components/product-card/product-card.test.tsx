@@ -19,7 +19,9 @@ describe('Component: ProductCard', () => {
     const { withStoreComponent } = withStore(<ProductCard isSlider={false} isActiveClass={''} styleSimilar={{}} good={fakeProduct}/>, makeFakeStore(
       {DATA_GOODS: {
         goods:fakeProducts,
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,

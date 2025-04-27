@@ -8,8 +8,8 @@ import {FilterParamsKeys} from '../filter-form/common';
 
 import ProductCard from '../product-card/product-card';
 
-import useAllFilters from '../../hooks/use-all-filters';
-import useSort from '../../hooks/use-sort';
+import useAllFilters from '../../hooks/use-all-filters/use-all-filters';
+import useSort from '../../hooks/use-sort/use-sort';
 
 const DEFAULT_PAGE_NUMBER = 1;
 const PER_PAGE_GOODS_COUNT = 9;

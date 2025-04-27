@@ -13,7 +13,9 @@ describe('Component: PromoSlider', () => {
     const { withStoreComponent } = withStore(<PromoSlider/>, makeFakeStore(
       {DATA_GOODS: {
         goods:[],
-        product: null
+        product: null,
+        filtredGoods: [],
+        isReset:false
       },
       MODAL_CALL: {
         isModalCallActive: false,
