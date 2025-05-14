@@ -12,7 +12,7 @@ import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
 import ReviewBlock from '../../components/review-block/review-block';
 import RatingStars from '../../components/rating-stars/rating-stars';
 import SimilarProductSlider from '../../components/similar-products-slider/similar-product-slider';
-import PopupCall from '../../components/popup-call/popup-call';
+import PopupAddCart from '../../components/popup-cart/popup-cart';
 import ProductTabs from '../../components/product-tabs/product-tabs';
 
 
@@ -81,7 +81,7 @@ function ProductPage():JSX.Element|undefined{
             {similarGoods ? <SimilarProductSlider similarGoods={similarGoods}/> : ''}
             <ReviewBlock reviews={reviews}/>
           </div>
-          <PopupCall/>
+          <PopupAddCart/>
         </main>
         <Link onClick={handleAnchorLinkClick} className="up-btn" to='#header' data-testid='upButton'>
           <svg width={12} height={18} aria-hidden="true">
